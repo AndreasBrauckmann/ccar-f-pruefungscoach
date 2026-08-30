@@ -1,0 +1,12 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Laufzeit / lokale Notizen
+score.json
+progress.json
+*.local.md

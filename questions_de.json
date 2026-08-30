@@ -1,0 +1,2164 @@
+{
+  "language": "de",
+  "exams": {
+    "ccar-f": {
+      "source": "Community-Lernleitfaden (inoffiziell): github.com/paullarionov/claude-certified-architect — kein offizieller Anthropic-Prüfungsauszug. Übersetzung ins Deutsche von Claude, nicht offiziell geprüft. Enthält eine vollständige 60-Fragen-Übungsprüfung.",
+      "questions": [
+        {
+          "id": 1,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Ein Dokumentenanalyse-Agent stellt fest, dass zwei glaubwürdige Quellen sich bei einer Kennzahl direkt widersprechen: Ein Regierungsbericht nennt 40% Wachstum, eine Branchenanalyse 12%. Beide Quellen wirken glaubwürdig, und die Diskrepanz könnte die Forschungsschlussfolgerungen wesentlich beeinflussen. Wie sollte der Dokumentenanalyse-Agent damit am effektivsten umgehen?",
+          "question": "Welcher Ansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Mit Plausibilitätsheuristiken die wahrscheinlichere Zahl auswählen, die Analyse mit diesem Wert abschließen und die Diskrepanz nur in einer Fußnote erwähnen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Beide Zahlen ins Analyseergebnis aufnehmen, ohne sie als widersprüchlich zu kennzeichnen, und den Synthese-Agenten anhand des breiteren Kontexts entscheiden lassen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Die Analyse stoppen und sofort an den Koordinator eskalieren, damit dieser entscheidet, welche Quelle autoritativer ist, bevor es weitergeht.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Analyse mit beiden Zahlen abschließen, den Konflikt explizit mit Quellenangabe kennzeichnen und den Koordinator entscheiden lassen, wie die Daten vor der Synthese abzugleichen sind.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Dieser Ansatz bewahrt die Aufgabentrennung: Der Analyse-Agent schließt seine Kernarbeit ab, ohne zu blockieren, bewahrt beide widersprüchlichen Werte mit klarer Quellenzuordnung und übergibt den Abgleich korrekt an den Koordinator, der den umfassenderen Kontext hat.",
+          "example": "Stellen Sie sich vor, zwei erfahrene Entwickler nennen Ihnen widerspruechliche Zeitschaetzungen fuer eine Migration - einer sagt 2 Wochen, der andere 6. Als deren Vorgesetzter (der Koordinator) moechten Sie nicht, dass einer der beiden heimlich eine Zahl auswaehlt und die Uneinigkeit verschweigt; Sie wollen beide Schaetzungen mit Quellenangabe sehen, um selbst zu entscheiden, wie sie zusammengefuehrt werden, bevor der Plan an den Kunden geht."
+        },
+        {
+          "id": 2,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Der Web-Recherche-Agent und der Dokumentenanalyse-Agent haben ihre Aufgaben abgeschlossen und Ergebnisse an den Koordinator zurückgegeben. Was ist der nächste Schritt zur Erstellung eines integrierten Forschungsberichts?",
+          "question": "Welcher nächste Schritt ist am geeignetsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Jeder Agent sendet seine Ergebnisse direkt an den Bericht-Schreib-Agenten, unter Umgehung des Koordinators.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Der Dokumentenanalyse-Agent fordert die Web-Rechercheergebnisse an und führt sie intern zusammen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Der Koordinator übergibt beide Ergebnismengen an den Synthese-Agenten zur einheitlichen Integration.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Der Koordinator verkettet die Rohausgaben beider Agenten und gibt sie als Endergebnis zurück.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "In einer Koordinator-Subagenten-Architektur leitet der Koordinator beide Ergebnismengen an den Synthese-Agenten zur zentralisierten Integration weiter, wodurch Kontrolle und hohe Qualität der Zusammenführung sichergestellt werden.",
+          "example": "Das ist so, als wuerde eine Projektleitung einen Marktforschungsbericht von einem Team und eine Wettbewerbsanalyse von einem anderen Team erhalten - statt die beiden PDFs einfach zusammenzuheften, gibt die Leitung beide an eine dedizierte Redaktion weiter, die daraus ein zusammenhaengendes Strategiedokument erstellt."
+        },
+        {
+          "id": 3,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Ein Dokumentenanalyse-Subagent scheitert häufig bei der Verarbeitung von PDF-Dateien: Manche haben beschädigte Abschnitte, die Parsing-Fehler auslösen, andere sind passwortgeschützt, und manchmal hängt sich die Parsing-Bibliothek bei großen Dateien auf. Aktuell beendet jede Ausnahme sofort den Subagenten und gibt einen Fehler an den Koordinator zurück, der entscheiden muss, ob wiederholt, übersprungen oder die gesamte Aufgabe abgebrochen wird. Dies führt zu übermäßiger Koordinator-Beteiligung bei der Routinefehlerbehandlung. Welche architektonische Verbesserung ist am effektivsten?",
+          "question": "Welche Verbesserung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Einen dedizierten Fehlerbehandlungs-Agenten erstellen, der alle Fehler über eine gemeinsame Warteschlange überwacht und Wiederherstellungsmaßnahmen entscheidet, indem er Neustart-Befehle direkt an Subagenten sendet.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Den Subagenten so konfigurieren, dass er immer Teilergebnisse mit Erfolgsstatus zurückgibt und Fehlerdetails in Metadaten einbettet; der Koordinator behandelt alle Antworten als erfolgreich.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den Koordinator alle Dokumente validieren lassen, bevor sie an den Subagenten gesendet werden, und Dokumente ablehnen, die Fehler verursachen könnten.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Lokale Wiederherstellung im Subagenten für vorübergehende Fehler implementieren und nur an den Koordinator eskalieren, was nicht lösbar ist, inklusive versuchter Schritte und Teilergebnisse.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Fehler auf der niedrigsten Ebene behandeln, die sie lösen kann. Lokale Wiederherstellung reduziert die Koordinator-Last und eskaliert trotzdem wirklich unlösbare Probleme mit vollständigem Kontext und Fortschritt.",
+          "example": "Vergleichbar mit einem Junior-Entwickler, der Routine-Ausnahmen (z. B. eine fehlende Konfigurationsdatei) selbststaendig durch Standardwerte abfaengt und den Tech Lead nur bei echten Blockern kontaktiert, etwa einer beschaedigten Datenbank - statt bei jeder Kleinigkeit zu stoeren."
+        },
+        {
+          "id": 4,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Nachdem das System zum Thema „Auswirkungen von KI auf die Kreativbranche“ gelaufen ist, stellen Sie fest, dass jeder Subagent erfolgreich abschließt: Der Web-Recherche-Agent findet relevante Artikel, der Dokumentenanalyse-Agent fasst sie korrekt zusammen, und der Synthese-Agent produziert kohärenten Text. Die Endberichte decken jedoch nur bildende Kunst ab und lassen Musik, Literatur und Film komplett aus. In den Koordinator-Logs sehen Sie, dass er das Thema in drei Teilaufgaben zerlegt hat: „KI in der digitalen Kunst“, „KI im Grafikdesign“ und „KI in der Fotografie“. Was ist die wahrscheinlichste Grundursache?",
+          "question": "Was ist die wahrscheinlichste Grundursache?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Dem Synthese-Agenten fehlen Anweisungen, um Abdeckungslücken zu erkennen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Der Dokumentenanalyse-Agent filtert nicht-visuelle Quellen aufgrund zu strenger Relevanzkriterien heraus.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Die Aufgabenzerlegung des Koordinators ist zu eng gefasst und weist den Subagenten Arbeit zu, die nicht alle relevanten Bereiche abdeckt.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Die Suchanfragen des Web-Recherche-Agenten sind unzureichend und sollten erweitert werden, um mehr Sektoren abzudecken.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Der Koordinator hat ein breites Thema nur in visuelle Kunst-Teilaufgaben zerlegt und dabei Musik, Literatur und Film komplett übersehen. Da die Subagenten ihre Aufgaben korrekt ausgeführt haben, ist die zu enge Zerlegung die offensichtliche Grundursache.",
+          "example": "Das ist der klassische Planungsfehler: Wenn eine Fuehrungskraft ein Team nur mit der Recherche zu 'Social-Media-Marketing' beauftragt, ist es keine Ueberraschung, dass niemand E-Mail-Kampagnen oder Messen betrachtet - die Teams haben exakt das getan, was verlangt wurde; die Aufgabenverteilung selbst war zu eng gefasst."
+        },
+        {
+          "id": 5,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Der Web-Recherche-Subagent liefert nur für 3 von 5 angeforderten Quellkategorien Ergebnisse (Wettbewerber-Websites und Branchenberichte erfolgreich, aber Nachrichtenarchive und Social-Feeds laufen in einen Timeout). Der Dokumentenanalyse-Subagent verarbeitet alle bereitgestellten Dokumente erfolgreich. Der Synthese-Subagent muss eine Zusammenfassung aus Eingaben gemischter Qualität erstellen.",
+          "question": "Welche Fehlerweitergabe-Strategie ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Synthese nur mit den erfolgreichen Quellen fortsetzen und eine Ausgabe erzeugen, ohne zu erwähnen, welche Daten nicht verfügbar waren.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Der Synthese-Subagent gibt einen Fehler an den Koordinator zurück, was einen vollständigen Neuversuch oder Aufgabenabbruch wegen unvollständiger Daten auslöst.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Der Synthese-Subagent bittet den Koordinator, die Timeout-Quellen mit längerem Timeout erneut abzufragen, bevor die Synthese beginnt.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Synthese-Ausgabe mit Abdeckungsanmerkungen strukturieren, die anzeigen, welche Schlussfolgerungen gut belegt sind und wo aufgrund nicht verfügbarer Quellen Lücken bestehen.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Abdeckungsanmerkungen setzen eine transparente, graduelle Leistungsminderung um: Sie bewahren den Wert der abgeschlossenen Arbeit und geben gleichzeitig Unsicherheit weiter, um fundierte Vertrauensentscheidungen zu ermöglichen.",
+          "example": "Wie ein Statusbericht, der sagt: 'Die Q3-Zahlen fuer EMEA sind belastbar, aber wir konnten das APAC-Vertriebsteam nicht rechtzeitig erreichen - diese Zahlen fehlen', statt eine Gesamtsumme so zu praesentieren, als waere sie vollstaendig. Die Luecke ist sichtbar, sodass die Fuehrung weiss, wie stark sie dem Ergebnis vertrauen kann."
+        },
+        {
+          "id": 6,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Der Dokumentenanalyse-Subagent stößt auf eine beschädigte PDF-Datei, die er nicht parsen kann. Wie sollte diese Störung beim Entwurf der Fehlerbehandlung des Systems am effektivsten behandelt werden?",
+          "question": "Welcher Ansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Einen Fehler mit Kontext an den Koordinator-Agenten zurückgeben, damit dieser über das weitere Vorgehen entscheiden kann.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Das beschädigte Dokument stillschweigend überspringen und mit den restlichen Dateien fortfahren, um den Arbeitsablauf nicht zu unterbrechen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Das Parsen des Dokuments automatisch dreimal mit exponentiellem Backoff wiederholen, bevor ein Fehler gemeldet wird.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Eine Ausnahme auslösen, die den gesamten Rechercheablauf beendet.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Einen Fehler mit Kontext an den Koordinator zurückzugeben ist am effektivsten, weil dieser damit fundiert entscheiden kann – Datei überspringen, alternative Parsing-Methode versuchen oder Nutzer benachrichtigen –, während die Sichtbarkeit des Fehlers erhalten bleibt.",
+          "example": "Aehnlich wie ein Praktikant, der auf eine defekte Rechnungs-PDF stoesst: Statt sie stillschweigend zu ueberspringen, endlos erneut zu versuchen oder den gesamten Abrechnungslauf abzubrechen, meldet er seinem Vorgesetzten 'diese eine Datei ist beschaedigt, das habe ich versucht' - und ueberlaesst die naechste Entscheidung der Fuehrungskraft."
+        },
+        {
+          "id": 7,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Produktions-Logs zeigen ein anhaltendes Muster: Anfragen wie „analysiere den hochgeladenen Quartalsbericht“ werden in 45% der Fälle an den Web-Recherche-Agenten statt an den Dokumentenanalyse-Agenten weitergeleitet. Bei der Überprüfung der Tool-Definitionen stellen Sie fest, dass der Web-Recherche-Agent ein Tool `analyze_content` mit der Beschreibung „analysiert Inhalte und extrahiert Schlüsselinformationen“ hat, während der Dokumentenanalyse-Agent ein Tool `analyze_document` mit der Beschreibung „analysiert Dokumente und extrahiert Schlüsselinformationen“ hat.",
+          "question": "Wie sollten Sie das Fehlleitungsproblem beheben?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Einen vorgeschalteten Klassifizierer hinzufügen, der erkennt, ob sich der Nutzer auf hochgeladene Dateien oder Web-Inhalte bezieht, bevor der Koordinator über die Delegation entscheidet.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Das Web-Recherche-Tool in `extract_web_results` umbenennen und die Beschreibung auf „verarbeitet und liefert aus Websuche und URLs abgerufene Informationen“ aktualisieren.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Few-Shot-Beispiele zum Koordinator-Prompt hinzufügen, die die korrekte Weiterleitung zwischen den beiden Tools zeigen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Beschreibung des Dokumentenanalyse-Tools um Anwendungsbeispiele erweitern, das Web-Recherche-Tool aber unverändert lassen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Das Umbenennen des Web-Recherche-Tools und die Aktualisierung seiner Beschreibung mit explizitem Bezug auf Websuche und URLs beseitigt die Grundursache, indem die semantische Überschneidung zwischen den beiden Tool-Namen und -Beschreibungen entfernt wird.",
+          "example": "Das ist wie zwei Confluence-Seiten, die beide 'Deployment Guide' heissen - staendig oeffnen Kolleginnen und Kollegen die falsche. Sobald eine in 'Legacy Deployment (2019)' umbenannt wird, ist die Verwechslung behoben, genau wie das Umbenennen eines mehrdeutigen Tools die Ueberschneidung in der Entscheidungsfindung eines Agenten aufloest."
+        },
+        {
+          "id": 8,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Ein Kollege schlägt vor, dass der Dokumentenanalyse-Agent seine Ergebnisse direkt an den Synthese-Agenten senden sollte, unter Umgehung des Koordinators.",
+          "question": "Was ist der Hauptvorteil, den Koordinator als zentrale Schnittstelle beizubehalten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Der Koordinator kann alle Interaktionen beobachten, Fehler einheitlich behandeln und entscheiden, welche Informationen jeder Subagent erhalten soll.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Der Koordinator bündelt mehrere Anfragen an Subagenten, wodurch die Gesamtzahl der API-Aufrufe und die Gesamtlatenz reduziert werden.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Das Routing über den Koordinator ermöglicht automatische Wiederholungslogik, die direkte Agent-zu-Agent-Aufrufe nicht unterstützen können.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Subagenten nutzen isolierten Speicher, und direkte Kommunikation würde eine komplexe Serialisierung erfordern, die nur der Koordinator durchführen kann.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Das Koordinator-Muster bietet zentrale Sichtbarkeit auf alle Interaktionen, einheitliche Fehlerbehandlung im gesamten System und feingranulare Kontrolle darüber, welche Informationen jeder Subagent erhält – das sind die Hauptvorteile einer sternförmigen Kommunikationstopologie.",
+          "example": "Wie eine Einsatzzentrale bei einem Taxiunternehmen: Jeder Fahrer meldet sich bei der Zentrale statt sich direkt gegenseitig per Funk zu kontaktieren, sodass die Zentrale stets den vollen Ueberblick hat, bei Problemen umdisponieren kann und genau steuert, welche Informationen jeder Fahrer erhaelt."
+        },
+        {
+          "id": 9,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Der Web-Recherche-Subagent läuft bei der Recherche zu einem komplexen Thema in einen Timeout. Sie müssen entwerfen, wie diese Fehlerinformation an den Koordinator zurückgegeben wird.",
+          "question": "Welcher Ansatz zur Fehlerweitergabe ermöglicht die beste intelligente Wiederherstellung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Strukturierten Fehlerkontext an den Koordinator zurückgeben, einschließlich Fehlertyp, ausgeführter Anfrage, eventueller Teilergebnisse und möglicher Alternativen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Den Timeout innerhalb des Subagenten abfangen und ein leeres Ergebnis als erfolgreich melden.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Automatische Wiederholungen mit exponentiellem Backoff im Subagenten implementieren und erst nach Erschöpfung der Versuche einen generischen Status „Suche nicht verfügbar“ zurückgeben.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Timeout-Ausnahme direkt an den übergeordneten Handler weitergeben, wodurch der gesamte Rechercheablauf beendet wird.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Strukturierter Fehlerkontext – inklusive Fehlertyp, ausgeführter Anfrage, Teilergebnissen und Alternativen – gibt dem Koordinator alles, was er für intelligente Wiederherstellungsentscheidungen benötigt, und bewahrt maximalen Kontext für die Entscheidung auf Koordinationsebene.",
+          "example": "Wie ein Eskalationsticket eines Support-Ingenieurs, das schreibt 'Timeout nach 30 s bei Endpunkt X, Abfrage war Y, hier die Teilantwort, und hier zwei noch nicht probierte Workarounds' - der volle Kontext ermoeglicht der naechsten Person, wirklich zu handeln, statt nur 'es ist kaputt' zu lesen."
+        },
+        {
+          "id": 10,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Sie haben dem Dokumentenanalyse-Agenten Zugriff auf ein generisches Tool `fetch_url` gegeben, damit er Dokumente per URL herunterladen kann. Produktions-Logs zeigen, dass dieser Agent nun häufig Suchmaschinen-Ergebnisseiten herunterlädt, um ad hoc eine Websuche durchzuführen – ein Verhalten, das über den Web-Recherche-Agenten laufen sollte und zu inkonsistenten Ergebnissen führt.",
+          "question": "Welche Lösung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "`fetch_url` durch ein Tool `load_document` ersetzen, das prüft, ob URLs auf Dokumentformate verweisen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "`fetch_url` vom Dokumentenanalyse-Agenten entfernen und alles URL-Abrufen über den Koordinator an den Web-Recherche-Agenten leiten.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Eine Filterung implementieren, die `fetch_url`-Aufrufe an bekannte Suchmaschinen-Domains blockiert, andere URLs aber zulässt.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Anweisungen zum Prompt des Dokumentenanalyse-Agenten hinzufügen, dass `fetch_url` nur zum Herunterladen von Dokument-URLs verwendet werden soll, nicht zur Suche.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Das Ersetzen eines generischen Tools durch ein dokumentspezifisches Tool, das URLs gegen Dokumentformate validiert, behebt die Grundursache, indem die Fähigkeit auf Schnittstellenebene eingeschränkt wird – das Prinzip der geringsten Rechte.",
+          "example": "Aehnlich wie man einem Praktikanten eine Firmenkreditkarte gibt, die nur bei Bueromaterial-Haendlern funktioniert, statt einer uneingeschraenkten Karte - man begrenzt das Werkzeug direkt an der Quelle auf seinen vorgesehenen Zweck, statt sich auf Anweisungen oder nachtraegliche Kontrolle zu verlassen."
+        },
+        {
+          "id": 11,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Bei der Recherche zu einem breiten Thema stellen Sie fest, dass der Web-Recherche-Agent und der Dokumentenanalyse-Agent dieselben Unterthemen untersuchen, was zu erheblicher Duplizierung in ihren Ausgaben führt. Der Token-Verbrauch verdoppelt sich fast, ohne dass Breite oder Tiefe der Recherche proportional zunehmen.",
+          "question": "Was ist der effektivste Weg, dies zu beheben?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Beide Agenten parallel fertig arbeiten lassen und den Koordinator anschließend überlappende Ergebnisse deduplizieren lassen, bevor sie an den Synthese-Agenten gehen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Der Koordinator teilt den Rechercheraum vor der Delegation explizit auf und weist jedem Agenten unterschiedliche Unterthemen oder Quelltypen zu.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Einen gemeinsamen Zustandsmechanismus implementieren, bei dem Agenten ihren aktuellen Fokusbereich protokollieren, damit andere Agenten Duplizierung während der Ausführung dynamisch vermeiden können.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Auf sequenzielle Ausführung umstellen, bei der die Dokumentenanalyse erst nach Abschluss der Websuche läuft und deren Ergebnisse als Kontext nutzt, um Duplizierung zu vermeiden.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Wenn der Koordinator den Rechercheraum vor der Delegation explizit aufteilt, ist das am effektivsten, weil es die Grundursache – unklare Aufgabengrenzen – vor Beginn der Arbeit adressiert. Es bewahrt die Parallelität und verhindert doppelten Aufwand und verschwendete Tokens.",
+          "example": "Wie ein Redaktionsleiter, der einer Reporterin das Rathaus und einem anderen den Schulausschuss zuweist, bevor beide anfangen, Quellen anzurufen - statt zuzulassen, dass beide unabhaengig voneinander dasselbe Buergermeister-Interview jagen und einen halben Tag verschwenden."
+        },
+        {
+          "id": 12,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Während der Recherche fragt der Web-Recherche-Subagent drei Quellkategorien mit unterschiedlichen Ergebnissen ab: akademische Datenbanken liefern 15 relevante Papers, Branchenberichte liefern „0 Ergebnisse“, und Patentdatenbanken melden „Verbindungs-Timeout“.",
+          "question": "Welcher Ansatz ermöglicht die besten Wiederherstellungsentscheidungen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Ergebnisse zu einer einzigen Erfolgsprozent-Kennzahl aggregieren (z. B. „67% Quellenabdeckung“) mit detaillierten Logs bei Bedarf.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Sowohl „Timeout“ als auch „0 Ergebnisse“ als Fehler melden, die Koordinator-Eingreifen erfordern.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Vorübergehende Fehler intern wiederholen und nur dauerhafte Fehler melden.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Zwischen Zugriffsfehlern (Timeout), die eine Wiederholungsentscheidung erfordern, und gültigen leeren Ergebnissen („0 Ergebnisse“), die erfolgreiche Abfragen darstellen, unterscheiden.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Ein Timeout (Zugriffsfehler) und „0 Ergebnisse“ (gültiges leeres Ergebnis) sind semantisch unterschiedliche Ausgänge, die unterschiedliche Reaktionen erfordern. Diese Unterscheidung erlaubt dem Koordinator, die Patentdatenbank erneut abzufragen und gleichzeitig „0 Ergebnisse“ als valides Ergebnis zu akzeptieren.",
+          "example": "Ein 'Verbindungs-Timeout' bei einer Lieferantendatenbank ist wie ein Telefon, das klingelt und klingelt, ohne dass jemand abnimmt - man sollte es spaeter erneut versuchen. Eine Suche, die '0 passende Rechnungen' liefert, ist dagegen wie jemand, der abnimmt und klar sagt 'dazu haben wir keinen Datensatz' - das ist eine echte, nuetzliche Antwort und kein Grund fuer einen Wiederholungsversuch."
+        },
+        {
+          "id": 13,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Produktionsmonitoring zeigt inkonsistente Synthesequalität. Bei aggregierten Ergebnissen von ~75.000 Tokens zitiert der Synthese-Agent zuverlässig Informationen aus den ersten 15.000 Tokens und den letzten 10.000 Tokens, übersieht aber oft kritische Erkenntnisse in den mittleren 50.000 Tokens – selbst wenn diese die Forschungsfrage direkt beantworten.",
+          "question": "Wie sollten Sie die aggregierte Eingabe umstrukturieren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Alle Subagenten-Ausgaben vor der Aggregation auf unter 20.000 Tokens zusammenfassen, um innerhalb des zuverlässigen Verarbeitungsbereichs des Modells zu bleiben.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Subagenten-Ergebnisse dem Synthese-Agenten inkrementell streamen, zuerst die Web-Recherche-Ergebnisse vollständig verarbeiten, dann die Dokumentenanalyse-Ergebnisse hinzufügen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Eine Zusammenfassung der wichtigsten Erkenntnisse an den Anfang der aggregierten Eingabe stellen und detaillierte Ergebnisse mit expliziten Abschnittsüberschriften zur leichteren Navigation organisieren.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Eine Rotation implementieren, die abwechselt, wessen Subagenten-Ergebnisse über verschiedene Rechercheaufgaben hinweg zuerst erscheinen, damit beide Quellen im Zeitverlauf gleich oft ganz oben stehen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Eine Zusammenfassung der Kernaussagen an den Anfang zu stellen, nutzt den Primäreffekt, sodass kritische Informationen an der am zuverlässigsten verarbeiteten Position stehen. Explizite Abschnittsüberschriften helfen dem Modell, im mittleren Inhalt zu navigieren, und mildern direkt den „Lost-in-the-Middle“-Effekt.",
+          "example": "Das entspricht dem Grund, warum ein gutes Management-Memo mit der Zeile 'Kernaussage: wir liegen 12 Prozent ueber Budget' beginnt und die Details danach folgen - Leserinnen und Leser nehmen zuverlaessig Anfang und Ende eines langen Dokuments auf, ueberfliegen aber die Mitte, weshalb zentrale Fakten nach vorne gehoeren."
+        },
+        {
+          "id": 14,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Im Test summiert sich die kombinierte Ausgabe des Web-Recherche-Agenten (85.000 Tokens inklusive Seiteninhalt) und des Dokumentenanalyse-Agenten (70.000 Tokens inklusive Gedankenketten) auf 155.000 Tokens, aber der Synthese-Agent arbeitet am besten mit Eingaben unter 50.000 Tokens.",
+          "question": "Welche Lösung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Vorgeschaltete Agenten so anpassen, dass sie strukturierte Daten (Kernfakten, Zitate, Relevanzwerte) statt ausführlicher Inhalte und Begründungen zurückgeben.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Einen zwischengeschalteten Zusammenfassungs-Agenten hinzufügen, der Erkenntnisse vor der Weitergabe an die Synthese verdichtet.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den Synthese-Agenten Erkenntnisse in sequenziellen Batches verarbeiten lassen, mit Zustand zwischen den Aufrufen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Erkenntnisse in einer Vektordatenbank speichern und dem Synthese-Agenten Suchtools geben, um während der Arbeit abzufragen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Vorgeschaltete Agenten so anzupassen, dass sie strukturierte Daten zurückgeben, behebt die Grundursache, indem das Token-Volumen bereits an der Quelle reduziert wird, während wesentliche Informationen erhalten bleiben – ohne umfangreichen Seiteninhalt und Begründungsspuren, die die Synthese unnötig aufblähen.",
+          "example": "Wie wenn man eine Kollegin um 'die drei wichtigsten Zahlen plus Quelle' bittet, statt ihr den kompletten 80-seitigen Rohdaten-Ordner weiterzuleiten - strukturierte, verdichtete Fakten liefern denselben Wert bei einem Bruchteil des Umfangs."
+        },
+        {
+          "id": 15,
+          "domain": "Multi-Agenten-Rechercheystem",
+          "situation": "Der Synthese-Agent muss beim Zusammenführen von Ergebnissen oft konkrete Aussagen verifizieren. Aktuell gibt der Synthese-Agent bei Verifizierungsbedarf die Kontrolle an den Koordinator zurück, der den Web-Recherche-Agenten aufruft und die Synthese dann mit den Ergebnissen erneut anstößt. Das fügt 2–3 zusätzliche Schleifen pro Aufgabe hinzu und erhöht die Latenz um 40%. 85% dieser Verifizierungen sind einfache Faktenchecks; 15% erfordern tiefere Recherche.",
+          "question": "Welcher Ansatz reduziert den Overhead am effektivsten, ohne die Systemzuverlässigkeit zu beeinträchtigen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Dem Synthese-Agenten Zugriff auf alle Web-Recherche-Tools geben, damit er jeden Verifizierungsbedarf direkt ohne Koordinator-Schleifen bearbeiten kann.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Den Synthese-Agenten alle Verifizierungsbedarfe sammeln lassen und sie am Ende gebündelt an den Koordinator zurückgeben, der sie dann gemeinsam an den Web-Recherche-Agenten sendet.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den Web-Recherche-Agenten proaktiv zusätzlichen Kontext um jede Quelle herum cachen lassen, in Erwartung eines Verifizierungsbedarfs durch die Synthese.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Dem Synthese-Agenten ein eng begrenztes Tool `verify_fact` für einfache Prüfungen geben, während komplexe Verifizierungen weiterhin über den Koordinator an den Web-Recherche-Agenten geleitet werden.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Ein eng begrenztes Fakten-Verifizierungs-Tool lässt den Synthese-Agenten 85% der einfachen Prüfungen direkt erledigen, wodurch die meisten Schleifen entfallen, während der Delegationspfad über den Koordinator für die 15% komplexen Verifizierungen erhalten bleibt. Das wendet das Prinzip der geringsten Rechte an und reduziert die Latenz erheblich.",
+          "example": "Wie wenn eine Redakteurin direkten Zugriff auf ein Firmenverzeichnis erhaelt, um schnell die Schreibweise eines Namens zu pruefen, waehrend sie fuer alles, was echte Recherche erfordert, weiterhin ueber die Rechercheabteilung geht - eine kleine, sichere Abkuerzung fuer die 85 Prozent trivialen Pruefungen."
+        },
+        {
+          "id": 16,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihre CI-Pipeline führt die Claude-Code-CLI (im Modus `--print`) aus und nutzt CLAUDE.md für Projektkontext bei der Code-Review; Entwickler finden die Reviews generell inhaltlich fundiert. Sie berichten jedoch, dass die Integration der Erkenntnisse in den Workflow schwierig ist – Claude gibt Fließtext-Absätze aus, die manuell in PR-Kommentare kopiert werden müssen. Das Team möchte jeden Befund automatisch als separaten Inline-PR-Kommentar posten, was strukturierte Daten mit Dateipfad, Zeilennummer, Schweregrad und Korrekturvorschlag erfordert.",
+          "question": "Welcher Ansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Einen Abschnitt „Ausgabeformat für Review“ zu CLAUDE.md hinzufügen mit Beispielen strukturierter Befunde, damit Claude das erwartete Format aus dem Projektkontext lernt.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Die CLI-Flags `--output-format json` und `--json-schema` verwenden, um strukturierte Befunde zu erzwingen, und die Ausgabe dann parsen, um Inline-Kommentare über die GitHub-API zu posten.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Explizite Formatierungsanweisungen in den Review-Prompt aufnehmen, sodass jeder Befund einer parsebaren Vorlage folgt.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Das Fließtext-Reviewformat beibehalten, aber einen Zusammenfassungsschritt hinzufügen, der Claude eine strukturierte JSON-Zusammenfassung der Befunde erzeugen lässt.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "`--output-format json` zusammen mit `--json-schema` erzwingt strukturierte Ausgabe auf CLI-Ebene und garantiert wohlgeformtes JSON mit den erforderlichen Feldern, das zuverlässig geparst und als Inline-PR-Kommentare über die GitHub-API gepostet werden kann.",
+          "example": "Es ist der Unterschied zwischen der Bitte an eine Kollegin, 'schau dir den PR an und sag mir, was du denkst', und der Uebergabe eines Formulars mit Feldern fuer Datei, Zeile, Schweregrad und Fix - erst die Struktur des Formulars erlaubt es, jede Antwort automatisch an der richtigen Stelle im Ticketsystem abzulegen."
+        },
+        {
+          "id": 17,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr Team nutzt Claude Code zur Generierung von Codevorschlägen, aber Sie bemerken ein Muster: Nicht offensichtliche Probleme – Performance-Optimierungen, die Grenzfälle brechen, Aufräumarbeiten, die unerwartet das Verhalten ändern – werden nur entdeckt, wenn ein anderes Teammitglied den PR reviewt. Claudes Begründung während der Generierung zeigt, dass diese Fälle bedacht, aber der eigene Ansatz als korrekt eingeschätzt wurde.",
+          "question": "Welcher Ansatz adressiert die Grundursache dieser Selbstprüfungsschwäche direkt?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Eine zweite, unabhängige Claude-Code-Instanz die Änderungen reviewen lassen, ohne Zugriff auf die Begründung des Generierungs-Agenten.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Den erweiterten Denkmodus für die Generierungsphase aktivieren, um gründlichere Abwägung vor der Erstellung von Vorschlägen zu ermöglichen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Explizite Selbstprüfungs-Anweisungen zum Generierungs-Prompt hinzufügen, die Claude bitten, eigene Vorschläge vor der Fertigstellung zu kritisieren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Vollständige Testdateien und Dokumentation in den Prompt-Kontext aufnehmen, damit Claude das erwartete Verhalten während der Generierung besser versteht.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Eine zweite, unabhängige Claude-Code-Instanz ohne Zugriff auf die Begründung des Generierungs-Agenten adressiert die Grundursache direkt, indem Bestätigungsverzerrung vermieden wird. Diese „frischen Augen“ entsprechen menschlichem Peer-Review, bei dem ein anderer Reviewer Probleme erkennt, die der Autor sich schöngeredet hat.",
+          "example": "Wie ein zweiter Lektor, der einen Artikel liest, ohne die Notizen zu sehen, die erklaeren, warum eine bestimmte Formulierung gewaehlt wurde - frische Augen ohne die Rechtfertigungen des Autors entdecken Probleme, die sich der urspruengliche Verfasser selbst schoengeredet hat."
+        },
+        {
+          "id": 18,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihre Code-Review-Komponente ist iterativ: Claude analysiert die geänderte Datei und fordert dann per Tool-Aufruf möglicherweise verwandte Dateien an, um Kontext zu verstehen, bevor finales Feedback gegeben wird. Sie evaluieren Batch-Verarbeitung, um API-Kosten zu senken.",
+          "question": "Was ist die primäre technische Einschränkung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Batch-Verarbeitung enthält keine Korrelations-IDs, um Ausgaben auf Eingabeanfragen zurückzuführen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Das asynchrone Modell kann während einer Anfrage keine Tools ausführen und Ergebnisse zurückgeben, damit Claude die Analyse fortsetzt.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Die Batch-API unterstützt keine Tool-Definitionen in den Anfrageparametern.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Batch-Verarbeitungslatenz von bis zu 24 Stunden ist für PR-Feedback zu langsam, obwohl der Workflow ansonsten funktionieren würde.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Ein „Fire-and-Forget“-Modell der asynchronen Batch-API hat keinen Mechanismus, um während einer Anfrage einen Tool-Aufruf abzufangen, auszuführen und Ergebnisse zurückzugeben, damit Claude fortfährt. Das ist grundsätzlich unvereinbar mit iterativen Tool-Aufruf-Workflows, die mehrere Runden innerhalb einer logischen Interaktion erfordern.",
+          "example": "Das ist wie ein Brief mit der Bitte 'beantworte diese drei Fragen, aber erst nachdem du im Archiv nachgeschaut hast' - ein Brief kann mitten in der Zustellung nicht pausieren, die Antwort des Archivs einholen und weitermachen; dafuer braeuchte man einen Telefonanruf (einen interaktiven Kanal) - genau deshalb unterstuetzen Batch-APIs keine iterative Tool-Nutzung."
+        },
+        {
+          "id": 19,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr CI/CD-System führt drei Claude-basierte Analysen aus: (1) schnelle Stilprüfungen bei jedem PR, die das Mergen blockieren, (2) umfassende wöchentliche Sicherheitsaudits der gesamten Codebasis, und (3) nächtliche Testfall-Generierung für kürzlich geänderte Module. Die Message-Batches-API bietet 50% Einsparung, die Verarbeitung kann aber bis zu 24 Stunden dauern.",
+          "question": "Welche Kombination ist korrekt?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Message-Batches-API für alle drei Aufgaben nutzen, um die 50%-Einsparung zu maximieren, und die Pipeline auf Batch-Fertigstellung pollen lassen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Synchrone Aufrufe für PR-Stilprüfungen nutzen; die Message-Batches-API für wöchentliche Sicherheitsaudits und nächtliche Testgenerierung verwenden.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Für alle drei Aufgaben synchrone Aufrufe nutzen für konsistente Antwortzeiten und sich auf Prompt-Caching zur Kostensenkung verlassen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Synchrone Aufrufe für PR-Stilprüfungen und nächtliche Testgenerierung nutzen; die Message-Batches-API nur für wöchentliche Sicherheitsaudits verwenden.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "PR-Stilprüfungen blockieren Entwickler und erfordern sofortige Antworten über synchrone Aufrufe, während wöchentliche Sicherheitsaudits und nächtliche Testgenerierung planbare Aufgaben mit flexiblen Fristen sind, die ein 24-Stunden-Batch-Fenster tolerieren – womit für beide 50% Einsparung erzielt wird.",
+          "example": "Wie die Wahl von guenstiger Nacht-Post fuer den woechentlichen Newsletter (ein Tag Verzoegerung ist unproblematisch), aber Express-Kurier fuer einen Vertrag, der noch heute vor Abschluss einer Fusion unterschrieben werden muss - die Dringlichkeit der jeweiligen Aufgabe bestimmt die Versandart, keine pauschale Regel."
+        },
+        {
+          "id": 20,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihre automatisierten Reviews finden echte Probleme, aber Entwickler berichten, dass das Feedback nicht umsetzbar ist. Befunde enthalten Formulierungen wie „komplexe Ticket-Routing-Logik“, ohne genau zu spezifizieren, was zu ändern ist. Wenn Sie detaillierte Anweisungen wie „immer konkrete Korrekturvorschläge einbeziehen“ hinzufügen, produziert das Modell weiterhin inkonsistente Ausgaben.",
+          "question": "Welche Prompting-Technik ist am zuverlässigsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Anweisungen mit noch expliziteren Anforderungen für jeden Teil des Feedback-Formats weiter verfeinern.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Das Kontextfenster erweitern, um mehr umliegende Codebasis einzubeziehen, damit das Modell genug Informationen für konkrete Korrekturvorschläge hat.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Einen zweistufigen Ansatz implementieren, bei dem ein Prompt Probleme identifiziert und ein zweiter Korrekturen generiert, um Spezialisierung zu ermöglichen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "3–4 Few-Shot-Beispiele hinzufügen, die exakt das geforderte Format zeigen: identifiziertes Problem, Codestelle, konkreter Korrekturvorschlag.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Few-Shot-Beispiele sind die effektivste Technik, um ein konsistentes Ausgabeformat zu erreichen, wenn Anweisungen allein variable Ergebnisse liefern. 3–4 Beispiele mit der gewünschten Struktur geben dem Modell ein konkretes Muster zum Nachahmen.",
+          "example": "Einer neuen Kollegin zu sagen 'schreibe immer umsetzbares Feedback' funktioniert selten so gut wie ihr zwei echte Beispiele mit konkretem Vorher/Nachher-Codeausschnitt zu zeigen - Menschen, und Modelle, uebernehmen Muster deutlich zuverlaessiger, als sie abstrakten Regeln folgen."
+        },
+        {
+          "id": 21,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihre CI-Pipeline umfasst zwei Claude-basierte Code-Review-Modi: einen Pre-Merge-Commit-Hook, der das Mergen bis zum Abschluss blockiert, und eine „Tiefenanalyse“, die nachts läuft, auf Batch-Fertigstellung pollt und detaillierte Vorschläge zum PR postet. Sie möchten die API-Kosten mit der Message-Batches-API senken, die 50% Einsparung bietet, aber Polling erfordert und bis zu 24 Stunden dauern kann.",
+          "question": "Welcher Modus sollte Batch-Verarbeitung nutzen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Nur der Pre-Merge-Commit-Hook.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Nur die Tiefenanalyse.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Beide Modi.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Keiner der beiden Modi.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Die Tiefenanalyse ist ein idealer Kandidat für Batch-Verarbeitung, da sie bereits nachts läuft, Verzögerung toleriert und vor der Veröffentlichung der Ergebnisse ein Polling-Modell nutzt – passend zur asynchronen, pollingbasierten Architektur der Message-Batches-API bei gleichzeitiger 50%-Einsparung.",
+          "example": "Dieselbe Logik wie die Wahl zwischen einem sofortigen Anruf bei einer Kollegin und einer Nachricht, die sie beantwortet, wann es passt: Der Pre-Merge-Check ist der Anruf, der den Tag blockiert, die naechtliche Tiefenanalyse ist die Nachricht, die warten kann - Batch-Verarbeitung passt nur zu Letzterem."
+        },
+        {
+          "id": 22,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr automatisiertes Review analysiert Kommentare und Docstrings. Der aktuelle Prompt weist Claude an, „zu prüfen, dass Kommentare korrekt und aktuell sind“. Befunde markieren oft akzeptable Muster (TODO-Markierungen, einfache Beschreibungen), während Kommentare übersehen werden, die Verhalten beschreiben, das der Code nicht mehr implementiert.",
+          "question": "Welche Änderung adressiert die Grundursache dieser inkonsistenten Analyse?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "`git blame`-Daten einbeziehen, damit Claude Kommentare identifizieren kann, die vor kürzlichen Codeänderungen liegen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Few-Shot-Beispiele irreführender Kommentare hinzufügen, damit das Modell ähnliche Muster in der Codebasis erkennt.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "TODO-, FIXME- und beschreibende Kommentarmuster vor der Analyse herausfiltern, um Rauschen zu reduzieren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Explizite Kriterien festlegen: Kommentare nur markieren, wenn das behauptete Verhalten dem tatsächlichen Codeverhalten widerspricht.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Explizite Kriterien – nur Kommentare markieren, wenn das behauptete Verhalten dem tatsächlichen Codeverhalten widerspricht – adressieren die Grundursache direkt, indem eine vage Anweisung durch eine präzise Problemdefinition ersetzt wird.",
+          "example": "Wie der Unterschied zwischen 'markiere Tippfehler' und 'markiere nur Saetze, die sachlich falsch sind' an eine Lektorin - die erste, vage Anweisung erfasst harmlose Eigenheiten wie einen TODO-Vermerk, waehrend das praezise Kriterium nur Kommentare erfasst, die aktiv ueber das tatsaechliche Codeverhalten luegen."
+        },
+        {
+          "id": 23,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr automatisiertes Code-Review-System zeigt inkonsistente Schweregrad-Bewertungen – ähnliche Probleme wie Nullpointer-Risiken werden in manchen PRs als „kritisch“, in anderen nur als „mittel“ eingestuft. Entwicklerbefragungen zeigen wachsendes Misstrauen – viele fangen an, Befunde ungelesen zu verwerfen, weil „die Hälfte falsch ist“.",
+          "question": "Welcher Ansatz stellt das Vertrauen der Entwickler am besten wieder her?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Kategorien mit hoher Falsch-Positiv-Rate (Stil, Namensgebung, Dokumentation) vorübergehend deaktivieren und nur Kategorien mit hoher Präzision behalten, während die Prompts verbessert werden.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Alle Kategorien aktiviert lassen, aber Konfidenzwerte zu jedem Befund anzeigen, damit Entwickler entscheiden können, was sie untersuchen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Alle Kategorien aktiviert lassen und über die nächsten Wochen Few-Shot-Beispiele hinzufügen, um die Genauigkeit jeder Kategorie zu verbessern.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Eine einheitliche Reduzierung der Strenge über alle Kategorien anwenden, um die Gesamt-Falsch-Positiv-Rate zu senken.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Das vorübergehende Deaktivieren von Kategorien mit hoher Falsch-Positiv-Rate stoppt sofort die Vertrauenserosion, indem störende Befunde entfernt werden, während der Wert präzisionsstarker Kategorien wie Sicherheit und Korrektheit erhalten bleibt.",
+          "example": "Wie ein Rauchmelder, der so oft bei angebranntem Toast piept, dass Bewohner ihn ganz abschalten und spaeter einen echten Brand verpassen - besser ist es, die uebersensiblen Stil- und Namenswarnungen voruebergehend abzuschalten und die verlaesslichen Sicherheitswarnungen zu behalten, um erst das Vertrauen wiederherzustellen."
+        },
+        {
+          "id": 24,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr automatisiertes Review generiert Testfallvorschläge für jeden PR. Bei einem PR, der Tracking für Kursabschlüsse hinzufügt, schlägt Claude 10 Testfälle vor, aber Entwickler-Feedback zeigt, dass 6 davon Szenarien duplizieren, die bereits von der bestehenden Testsuite abgedeckt sind.",
+          "question": "Welche Änderung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die bestehende Testdatei in den Kontext aufnehmen, damit Claude ermitteln kann, welche Szenarien bereits abgedeckt sind.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Die angeforderte Anzahl an Vorschlägen von 10 auf 5 reduzieren, in der Annahme, Claude priorisiere zuerst die wertvollsten Fälle.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Anweisungen hinzufügen, die Claude anweisen, sich ausschließlich auf Grenzfälle und Fehlerbedingungen statt auf Erfolgspfade zu konzentrieren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Eine Nachverarbeitung implementieren, die Vorschläge herausfiltert, deren Beschreibungen per Stichwortabgleich mit bestehenden Testnamen übereinstimmen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Die bestehende Testdatei einzubeziehen behebt die Grundursache der Duplizierung: Claude kann bereits abgedeckte Szenarien nur vermeiden, wenn es weiß, welche Tests bereits existieren.",
+          "example": "Wie wenn man jemanden bittet, neue Tagesordnungspunkte fuer ein Meeting vorzuschlagen, ohne ihm die bestehende Tagesordnung zu zeigen - natuerlich schlaegt er Punkte erneut vor, die schon draufstehen. Erst die aktuelle Liste zeigen, dann fragen."
+        },
+        {
+          "id": 25,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Nachdem ein erstes automatisiertes Review 12 Befunde identifiziert hat, pusht ein Entwickler neue Commits, um die Probleme zu beheben. Ein erneutes Review liefert 8 Befunde, aber Entwickler berichten, dass 5 davon frühere Kommentare zu bereits in den neuen Commits behobenem Code duplizieren.",
+          "question": "Was ist der effektivste Weg, dieses redundante Feedback zu eliminieren, ohne die Gründlichkeit zu beeinträchtigen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Review nur beim Erstellen des PR und im finalen Pre-Merge-Zustand ausführen, Zwischen-Commits überspringen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Einen Nachverarbeitungsfilter hinzufügen, der Befunde entfernt, die per Dateipfad und Problembeschreibung mit vorherigen übereinstimmen, bevor Kommentare gepostet werden.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den Review-Umfang auf im letzten Push geänderte Dateien beschränken, Dateien aus früheren Commits ausschließen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Vorherige Review-Befunde in den Kontext aufnehmen und Claude anweisen, nur neue oder weiterhin ungelöste Probleme zu melden.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Vorherige Review-Befunde in den Kontext aufzunehmen lässt Claude neue Probleme von bereits in kürzlichen Commits behobenen unterscheiden – das erhält die Gründlichkeit und vermeidet redundantes Feedback.",
+          "example": "Wie eine Codereviewerin, die eine laufende Liste 'bereits angemerkt' fuehrt, damit sie bei jeder Ueberarbeitung nicht denselben Hinweis wiederholt - sie meldet sich nur zu Neuem oder weiterhin Unerledigtem und spart allen Zeit."
+        },
+        {
+          "id": 26,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr Pipeline-Skript führt `claude \"Analysiere diesen Pull Request auf Sicherheitsprobleme\"` aus, aber der Job hängt sich unbegrenzt auf. Logs zeigen, dass Claude Code auf interaktive Eingabe wartet.",
+          "question": "Was ist der korrekte Ansatz, um Claude Code in einer automatisierten Pipeline auszuführen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Ein Flag `--batch` hinzufügen: `claude --batch \"...\"`.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Das Flag `-p` hinzufügen: `claude -p \"...\"`.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Stdin von `/dev/null` umleiten.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Umgebungsvariable `CLAUDE_HEADLESS=true` vor der Ausführung setzen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Das Flag `-p` (oder `--print`) ist der dokumentierte Weg, um Claude Code nicht-interaktiv auszuführen. Es verarbeitet den Prompt, gibt das Ergebnis auf stdout aus und beendet sich, ohne auf Nutzereingabe zu warten.",
+          "example": "Wie der Unterschied zwischen einem geoeffneten Chatfenster, in das man tippt (interaktiv), und einer E-Mail, die automatisch beantwortet und geschlossen wird (nicht-interaktiv) - eine CI-Pipeline braucht den E-Mail-Modus, genau das schaltet der Parameter -p / --print ein."
+        },
+        {
+          "id": 27,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ein Pull Request ändert 14 Dateien in einem Bestandsverfolgungsmodul. Ein Single-Pass-Review, das alle Dateien zusammen analysiert, liefert inkonsistente Ergebnisse: detailliertes Feedback zu manchen Dateien, aber oberflächliche Kommentare zu anderen, übersehene offensichtliche Fehler und widersprüchliches Feedback.",
+          "question": "Wie sollten Sie das Review umstrukturieren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Drei unabhängige Full-PR-Review-Durchläufe ausführen und nur Probleme markieren, die in mindestens zwei der drei Durchläufe auftreten.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "In fokussierte Durchgänge aufteilen: jede Datei einzeln auf lokale Probleme prüfen, dann einen separaten Integrationsdurchgang für dateiübergreifende Datenflüsse ausführen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Entwickler verpflichten, große PRs vor dem automatisierten Review in kleinere Einreichungen von 3–4 Dateien aufzuteilen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Auf ein größeres Modell mit größerem Kontextfenster umsteigen, damit es ausreichend Aufmerksamkeit auf alle 14 Dateien in einem Durchgang richten kann.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Fokussierte Durchgänge pro Datei adressieren die Grundursache – verwässerte Aufmerksamkeit – durch konsistente Tiefe und zuverlässige lokale Fehlererkennung. Ein separater Integrationsdurchgang deckt dann dateiübergreifende Aspekte ab.",
+          "example": "Wie das Lektorat eines Buches mit 14 Kapiteln: Ein Lektor, der alle Kapiteldetails gleichzeitig im Kopf behalten muss, gibt bei manchen oberflaechliche Anmerkungen und uebersieht anderes - besser ist ein fokussierter Durchgang pro Kapitel, gefolgt von einem separaten Durchgang, der nur prueft, ob die Kapitel als Gesamtgeschichte zusammenpassen."
+        },
+        {
+          "id": 28,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr automatisiertes Code-Review liefert durchschnittlich 15 Befunde pro Pull Request, und Entwickler berichten von einer Falsch-Positiv-Rate von 40%. Der Engpass ist die Untersuchungszeit: Entwickler müssen jeden Befund öffnen, um Claudes Begründung zu lesen, bevor sie entscheiden, ob sie ihn beheben oder verwerfen. Stakeholder haben jeden Ansatz abgelehnt, der Befunde filtert, bevor Entwickler sie sehen.",
+          "question": "Welche Änderung adressiert die Untersuchungszeit am besten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Claude verpflichten, Begründung und Konfidenzschätzung direkt in jeden Befund aufzunehmen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Einen Nachbearbeitungsschritt hinzufügen, der Befundmuster analysiert und automatisch solche unterdrückt, die zu historischen Falsch-Positiv-Signaturen passen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Befunde als „blockierende Probleme“ vs. „Vorschläge“ kategorisieren, mit unterschiedlichen Review-Anforderungen je Stufe.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Claude so konfigurieren, dass nur Befunde mit hoher Konfidenz angezeigt werden, unsichere Markierungen vor den Entwicklern herausfiltern.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Begründung und Konfidenz direkt in jedem Befund zu ergänzen reduziert die Untersuchungszeit, weil Entwickler schnell triagieren können, ohne jeden Befund zu öffnen – und erfüllt die Bedingung „kein Filtern“, da alle Befunde sichtbar bleiben.",
+          "example": "Wie ein aerztlicher Befund, der schreibt 'moeglicher Bruch, 60 Prozent Konfidenz aufgrund des Roentgenwinkels, zweite Aufnahme empfohlen' statt nur 'Bruch' - man kann schneller einschaetzen, weil die Begruendung direkt dabeisteht, ohne dass vorab jemand entscheidet, welche Befunde man ueberhaupt sehen darf."
+        },
+        {
+          "id": 29,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Die Analyse Ihres automatisierten Code-Reviews zeigt große Unterschiede der Falsch-Positiv-Raten je Kategorie: Sicherheit/Korrektheit 8%, Performance 18%, Stil/Namensgebung 52%, Dokumentation 48%. Entwicklerbefragungen zeigen wachsendes Misstrauen.",
+          "question": "Welcher Ansatz stellt das Vertrauen der Entwickler am besten wieder her?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Kategorien mit hoher Falsch-Positiv-Rate (Stil, Namensgebung, Dokumentation) vorübergehend deaktivieren und nur Kategorien mit hoher Präzision behalten, während die Prompts verbessert werden.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Alle Kategorien aktiviert lassen, aber Konfidenzwerte zu jedem Befund anzeigen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Alle Kategorien aktiviert lassen und über die nächsten Wochen Few-Shot-Beispiele hinzufügen, um die Genauigkeit zu verbessern.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Eine einheitliche Reduzierung der Strenge über alle Kategorien anwenden.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Das vorübergehende Deaktivieren von Kategorien mit hoher Falsch-Positiv-Rate stoppt sofort die Vertrauenserosion, während der Wert präzisionsstarker Kategorien erhalten bleibt und Raum entsteht, um Prompts vor der Wiederaktivierung zu verbessern.",
+          "example": "Dieselbe Lehre wie bei einem Spamfilter mit 18 Prozent Falsch-Positiv-Rate bei 'dringenden' E-Mails - man schaltet diese Regel besser voruebergehend ab, statt zuzulassen, dass Menschen dem gesamten Postfachfilter misstrauen, einschliesslich der gut funktionierenden Teile."
+        },
+        {
+          "id": 30,
+          "domain": "Claude Code für Continuous Integration",
+          "situation": "Ihr Team möchte die API-Kosten für automatisierte Analysen senken. Aktuell bedienen synchrone Claude-Aufrufe zwei Workflows: (1) eine blockierende Pre-Merge-Prüfung, die abgeschlossen sein muss, bevor Entwickler mergen können, und (2) ein über Nacht erstellter Bericht zu technischen Schulden für die Durchsicht am nächsten Morgen. Ihr Manager schlägt vor, beide auf die Message-Batches-API umzustellen, um 50% zu sparen.",
+          "question": "Wie sollten Sie diesen Vorschlag bewerten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Beide auf Batch-Verarbeitung umstellen mit Rückfall auf synchrone Aufrufe, falls Batches zu lange dauern.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Beide Workflows auf Batch-Verarbeitung mit Status-Polling zur Bestätigung des Abschlusses umstellen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Batch-Verarbeitung nur für Berichte zu technischen Schulden nutzen; synchrone Aufrufe für Pre-Merge-Prüfungen beibehalten.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Synchrone Aufrufe für beide Workflows beibehalten, um Probleme mit der Reihenfolge der Batch-Ergebnisse zu vermeiden.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Die Verarbeitung über die Message-Batches-API kann bis zu 24 Stunden ohne Latenz-SLA dauern – akzeptabel für nächtliche Berichte, aber inakzeptabel für blockierende Pre-Merge-Prüfungen, bei denen Entwickler warten.",
+          "example": "Dieselbe Logik wie zuvor: Ein Technical-Debt-Bericht, den ohnehin niemand vor morgen frueh liest, ist ein perfekter Kandidat fuer die langsamere, guenstigere Batch-Spur, waehrend ein Merge-blockierender Check jedes Mal die schnelle Spur sein muss."
+        },
+        {
+          "id": 31,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie haben Claude Code gebeten, eine Funktion zu implementieren, die API-Antworten in ein internes normalisiertes Format transformiert. Nach zwei Iterationen entspricht die Ausgabestruktur immer noch nicht den Erwartungen – manche Felder sind unterschiedlich verschachtelt, Zeitstempel falsch formatiert. Sie haben die Anforderungen in Fließtext beschrieben, aber Claude interpretiert sie jedes Mal anders.",
+          "question": "Welcher Ansatz ist für die nächste Iteration am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Ein JSON-Schema schreiben, das die erwartete Ausgabestruktur beschreibt, und Claudes Ausgabe nach jeder Iteration dagegen validieren.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "2–3 konkrete Eingabe-Ausgabe-Beispiele bereitstellen, die die erwartete Transformation für repräsentative API-Antworten zeigen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Die Anforderungen technisch präziser neu formulieren, mit exakten Feldzuordnungen, Verschachtelungsregeln und Zeitstempel-Formatstrings.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Claude bitten, sein aktuelles Verständnis der Anforderungen zu erklären, um herauszufinden, wo die Interpretationen auseinandergehen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Konkrete Eingabe-Ausgabe-Beispiele beseitigen die Mehrdeutigkeit von Fließtext-Beschreibungen, indem sie Claude die exakt erwarteten Transformationsergebnisse zeigen – das adressiert direkt die Grundursache: Fehlinterpretation von Textanforderungen.",
+          "example": "Wie beim Einarbeiten in ein Dateneingabeformat: Zwei ausgefuellte Musterformulare zu zeigen funktioniert deutlich besser als ein Absatz Fliesstext ueber Feldreihenfolge und Datumsformate - Beispiele beseitigen die Mehrdeutigkeit, die freier Text immer offenlaesst."
+        },
+        {
+          "id": 32,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie müssen Slack als neuen Benachrichtigungskanal hinzufügen. Die bestehende Codebasis hat klare, etablierte Muster für E-Mail, SMS und Push-Kanäle. Slacks API bietet jedoch grundlegend unterschiedliche Integrationsansätze – eingehende Webhooks, Bot-Tokens oder Slack-Apps. Ihre Aufgabe lautet „Slack-Unterstützung hinzufügen“, ohne die Integrationsmethode zu spezifizieren.",
+          "question": "Wie sollten Sie diese Aufgabe angehen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Im direkten Ausführungsmodus mit eingehenden Webhooks beginnen, um dem bestehenden Einweg-Benachrichtigungsmuster zu entsprechen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "In den Planungsmodus wechseln, um Integrationsoptionen und architektonische Auswirkungen zu untersuchen, und vor der Implementierung eine Empfehlung vorlegen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Im direkten Ausführungsmodus beginnen, indem eine Slack-Kanal-Klasse nach bestehenden Mustern erstellt und die Entscheidung zur Integrationsmethode aufgeschoben wird.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Im direkten Ausführungsmodus mit einem Bot-Token-Ansatz beginnen, um Zustellbestätigung zu ermöglichen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Die Slack-Integration hat mehrere valide Ansätze mit deutlich unterschiedlichen architektonischen Auswirkungen, und die Anforderungen sind mehrdeutig. Der Planungsmodus erlaubt es, Abwägungen zu bewerten und sich vor der Implementierung auf einen Ansatz zu einigen.",
+          "example": "Wie ein Bauleiter, der vor dem Betonieren ein Meeting einberuft, weil der Bauplan nicht angibt, welche Wand tragend ist - man klaert die Optionen und holt eine Freigabe ein, bevor man sich auf etwas festlegt, das teuer rueckgaengig zu machen waere."
+        },
+        {
+          "id": 33,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihre CLAUDE.md-Datei ist auf über 400 Zeilen angewachsen und enthält Coding-Standards, Test-Konventionen, eine detaillierte PR-Review-Checkliste, Deployment-Anweisungen und Datenbank-Migrationsverfahren. Sie möchten, dass Claude Coding-Standards und Test-Konventionen immer befolgt, PR-Review-, Deploy- und Migrationsanleitungen aber nur bei diesen Aufgaben anwendet.",
+          "question": "Welcher Umstrukturierungsansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Alle Anleitungen in separate Skills-Dateien nach Workflow-Typ verschieben, nur eine kurze Projektbeschreibung in CLAUDE.md belassen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Alles in CLAUDE.md belassen, aber mit `@import`-Syntax in separat gepflegte Dateien nach Kategorie organisieren.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "CLAUDE.md in Dateien unter `.claude/rules/` mit pfadgebundenen Glob-Mustern aufteilen, sodass jede Regel nur für die relevanten Dateitypen geladen wird.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Universelle Standards in CLAUDE.md belassen und Skills für workflow-spezifische Anleitungen (PR-Review, Deploy, Migrationen) mit Auslöse-Stichwörtern erstellen.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "CLAUDE.md-Inhalte werden in jeder Sitzung geladen, sodass universelle Standards immer gelten, während Skills bei Bedarf aufgerufen werden – ideal für workflow-spezifische Anleitungen wie PR-Review, Deployment und Migrationen.",
+          "example": "Wie der Dresscode im allgemeinen Mitarbeiterhandbuch (das jeder immer liest), waehrend die Brandschutzordnung in einem separaten Ordner liegt, der nur beim tatsaechlichen Alarm herausgeholt wird - immer relevante Regeln stehen im Hauptdokument, situative Regeln liegen auf Abruf bereit."
+        },
+        {
+          "id": 34,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie sollen die monolithische Anwendung Ihres Teams in Microservices umstrukturieren. Das betrifft Änderungen an Dutzenden Dateien und erfordert Entscheidungen über Servicegrenzen und Modulabhängigkeiten.",
+          "question": "Welchen Ansatz sollten Sie wählen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "In den Planungsmodus wechseln, um die Codebasis zu erkunden, Abhängigkeiten zu verstehen und den Umsetzungsansatz vor Änderungen zu entwerfen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Im direkten Ausführungsmodus beginnen und erst bei unerwarteter Komplexität während der Umsetzung in den Planungsmodus wechseln.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Im direkten Ausführungsmodus beginnen und schrittweise Änderungen vornehmen, sodass sich natürliche Servicegrenzen während der Umsetzung ergeben.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Direkte Ausführung mit detaillierten Vorabanweisungen nutzen, die jede Servicestruktur festlegen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Der Planungsmodus ist die richtige Strategie für komplexe architektonische Umstrukturierungen wie das Aufteilen eines Monolithen: Er ermöglicht sichere Exploration und fundierte Entscheidungen über Grenzen, bevor potenziell teure Änderungen an vielen Dateien vorgenommen werden.",
+          "example": "Dieselbe Logik wie ein Architekt, der vollstaendige Baupläne zeichnet, bevor die Baufirma auch nur einen Ziegel anfasst, wenn ein Haus in Wohnungen umgebaut wird - grosse, schwer umkehrbare Strukturaenderungen verdienen vorab eine Planung, keine Improvisation mitten im Bau."
+        },
+        {
+          "id": 35,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihr Team hat einen Skill `/analyze-codebase` erstellt, der eine tiefgehende Codeanalyse durchführt. Nach Ausführung des Befehls berichten Teammitglieder, dass Claude in der Sitzung weniger reaktionsschnell wird und den Kontext der ursprünglichen Aufgabe verliert.",
+          "question": "Wie beheben Sie das am effektivsten, ohne die vollen Analysefähigkeiten zu verlieren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "`context: fork` im Skill-Frontmatter hinzufügen, um die Analyse in einem isolierten Subagenten-Kontext auszuführen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "`model: haiku` im Frontmatter hinzufügen, um ein schnelleres, günstigeres Modell für die Analyse zu nutzen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den Skill in drei kleinere Skills aufteilen, die jeweils weniger Ausgabe erzeugen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Dem Skill Anweisungen hinzufügen, alle Ergebnisse vor der Anzeige zu einer kurzen Zusammenfassung zu verdichten.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "`context: fork` führt die Analyse in einem isolierten Subagenten-Kontext aus, sodass die umfangreiche Ausgabe das Kontextfenster der Hauptsitzung nicht belastet – die volle Analysefähigkeit bleibt erhalten, während die Hauptsitzung reaktionsschnell bleibt.",
+          "example": "Wie wenn man eine Kollegin in einen separaten Raum schickt, um ein riesiges Archiv zu durchsuchen, statt alle Kisten auf den gemeinsamen Schreibtisch zu kippen, waehrend man selbst weiterarbeiten moechte - sie kommt nur mit der Zusammenfassung zurueck, und der Arbeitsplatz bleibt nutzbar."
+        },
+        {
+          "id": 36,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihr Team nutzt einen Skill `/commit` unter `.claude/skills/commit/SKILL.md`. Ein Entwickler möchte ihn für seinen persönlichen Workflow anpassen, ohne die Teammitglieder zu beeinflussen.",
+          "question": "Was empfehlen Sie?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Eine persönliche Version unter `~/.claude/skills/` mit anderem Namen erstellen, z. B. `/my-commit`.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Bedingte Logik basierend auf dem Benutzernamen im Projekt-Skill-Frontmatter hinzufügen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Eine persönliche Version unter `~/.claude/skills/commit/SKILL.md` mit demselben Namen erstellen.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "`override: true` im persönlichen Skill-Frontmatter setzen, um ihn gegenüber der Projektversion zu priorisieren.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Persönliche Skills haben Vorrang vor Projekt-Skills mit demselben Namen, sodass der Entwickler seinen Workflow anpassen kann, während der vertraute Befehlsname `/commit` erhalten bleibt, ohne Teammitglieder zu beeinflussen.",
+          "example": "Wie eine persoenliche Tastaturkuerzel-Uebersicht am eigenen Monitor, die die gemeinsame Version an der Bueroward fuer einen selbst ersetzt - man bekommt seine angepasste Fassung, ohne dass der Monitor von jemand anderem betroffen ist."
+        },
+        {
+          "id": 37,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihr Team nutzt Claude Code seit Monaten. Drei Entwickler berichten, dass Claude die Vorgabe „immer umfassende Fehlerbehandlung einbeziehen“ befolgt, aber ein vierter, neu hinzugekommener Entwickler sagt, Claude befolge sie nicht. Alle vier arbeiten im selben Repository mit aktuellem Code.",
+          "question": "Was ist die wahrscheinlichste Ursache und Lösung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Vorgabe steht in den benutzerbezogenen `~/.claude/CLAUDE.md`-Dateien der ursprünglichen Entwickler, nicht in der Projekt-`.claude/CLAUDE.md`. Die Anweisung in die Projektdatei verschieben.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Die `~/.claude/CLAUDE.md` des neuen Entwicklers enthält widersprüchliche Anweisungen, die Projekteinstellungen überschreiben; der widersprüchliche Abschnitt sollte gelöscht werden.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Claude Code lernt im Zeitverlauf benutzerspezifische Präferenzen; der neue Entwickler muss die Anforderung wiederholen, bis Claude sie sich „merkt“.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Claude Code cacht CLAUDE.md nach dem ersten Lesen; die ursprünglichen Entwickler nutzen zwischengespeicherte Versionen. Alle sollten den Claude-Code-Cache leeren.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Wenn die Vorgabe nur zu benutzerbezogenen Konfigurationen hinzugefügt wurde und nicht zur projektweiten `.claude/CLAUDE.md`, erhalten neue Teammitglieder sie nicht. Das Verschieben in die Projektkonfiguration stellt sicher, dass alle sie automatisch bekommen.",
+          "example": "Wie eine Regel, die drei erfahrene Mitarbeitende nur befolgen, weil sie auf einem Post-it am eigenen Schreibtisch klebt, aber nie ins offizielle Onboarding-Handbuch aufgenommen wurde - die neue Kollegin sieht sie nie. Die Regel gehoert ins Handbuch, das alle erhalten."
+        },
+        {
+          "id": 38,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie stellen fest, dass das Einbeziehen von 2–3 vollständigen Endpunkt-Implementierungsbeispielen als Kontext die Konsistenz bei der Generierung neuer API-Endpunkte deutlich verbessert. Dieser Kontext ist jedoch nur beim Erstellen neuer Endpunkte nützlich – nicht beim Debuggen, Reviewen oder anderer Arbeit im API-Verzeichnis.",
+          "question": "Welcher Konfigurationsansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Endpunkt-Beispiele und Musterdokumentation zur Projekt-CLAUDE.md hinzufügen, sodass sie immer verfügbar sind.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Bei jeder Generierungsanfrage manuell auf Endpunkt-Beispiele verweisen, indem Code in den Prompt kopiert wird.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Pfadspezifische Regeln unter `.claude/rules/api/` konfigurieren, die Endpunkt-Beispiele enthalten und sich bei Arbeit im API-Verzeichnis aktivieren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Einen Skill erstellen, der auf die Endpunkt-Beispiele verweist und Anweisungen zur Musterbefolgung enthält, der bei Bedarf per Slash-Befehl aufgerufen wird.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Ein bei Bedarf aufgerufener Skill lädt den Beispielkontext nur beim Generieren neuer Endpunkte, nicht bei unabhängigen Aufgaben – das hält den Hauptkontext sauber und bewahrt gleichzeitig hohe Generierungsqualität, wenn benötigt.",
+          "example": "Wie ein Vorlagenordner, den man nur oeffnet, wenn ein neuer Vertrag entworfen wird, statt diese Vorlagen dauerhaft auf dem Desktop anzuheften, wo sie bei jeder anderen Aufgabe den ganzen Tag stoeren wuerden."
+        },
+        {
+          "id": 39,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihr Team hat einen Skill `/migration` erstellt, der Datenbank-Migrationsdateien über `$ARGUMENTS` generiert. In der Produktion zeigen sich drei Probleme: (1) Entwickler führen ihn oft ohne Argumente aus, was zu schlecht benannten Dateien führt, (2) er verwendet manchmal Schema-Details aus nicht zusammenhängenden früheren Unterhaltungen, und (3) ein Entwickler hat versehentlich eine destruktive Test-Bereinigung ausgeführt, als der Skill breiten Tool-Zugriff hatte.",
+          "question": "Welcher Konfigurationsansatz löst alle drei Probleme?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Positionsparameter `$1`/`$2` statt `$ARGUMENTS` verwenden, explizite Schema-Dateiverweise über `@`-Syntax einbeziehen und eine Frontmatter-Warnung zu destruktiven Operationen hinzufügen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "`argument-hint` im Frontmatter hinzufügen, um erforderliche Parameter einzufordern, `context: fork` zur Isolierung der Ausführung nutzen und `allowed-tools` auf Datei-Schreiboperationen beschränken.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "In `/migration-create` und `/migration-apply` mit Validierungsanweisungen zur Anforderung des Migrationsnamens bei Fehlen aufteilen und unterschiedliche `allowed-tools`-Bereiche für jeden nutzen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Validierungsanweisungen im Skill hinzufügen, um sicherzustellen, dass `$ARGUMENTS` gültig ist, Aufforderungen ergänzen, früheren Kontext zu ignorieren, und verbotene Operationen auflisten.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "`argument-hint` verbessert die Argumenteingabe, `context: fork` verhindert Kontext-Leckage aus früheren Unterhaltungen, und `allowed-tools` beschränkt den Skill auf sichere Operationen und verhindert destruktive Aktionen – zusammen lösen sie alle drei Probleme.",
+          "example": "Wie ein Firmen-Bestellformular, das ohne Pflichtfeld 'Lieferant' nicht abgeschickt werden kann, jedes Mal ein neues, leeres Formular ist statt automatisch aus einer alten fremden Bestellung befuellt zu werden, und nur Kaeufe bis zu einem festen Limit autorisiert - drei getrennte Sicherungen, die jeweils eine andere Schwachstelle im Prozess schliessen."
+        },
+        {
+          "id": 40,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihre Codebasis enthält Bereiche mit unterschiedlichen Coding-Konventionen: React-Komponenten nutzen Hooks, API-Handler async/await mit spezifischer Fehlerbehandlung, und Datenbankmodelle folgen dem Repository-Muster. Testdateien liegen verteilt neben dem getesteten Code, und alle Tests sollen unabhängig vom Ort dieselben Konventionen befolgen.",
+          "question": "Was ist der am besten unterstützte Weg, damit Claude bei der Codegenerierung automatisch die richtigen Konventionen anwendet?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Alle Konventionen unter Überschriften je Bereich in der Root-CLAUDE.md ablegen und Claude ableiten lassen, welcher Abschnitt zutrifft.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Skills unter `.claude/skills/` für jeden Codetyp erstellen, mit Konventionen in jeder SKILL.md.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Eine separate CLAUDE.md-Datei in jedem Unterverzeichnis mit den Konventionen für diesen Bereich ablegen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Regeldateien unter `.claude/rules/` mit YAML-Frontmatter erstellen, die Glob-Muster festlegen, um Konventionen bedingt anhand von Dateipfaden anzuwenden.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "`.claude/rules/`-Dateien mit YAML-Frontmatter und Glob-Mustern ermöglichen deterministische, pfadbasierte Anwendung von Konventionen unabhängig von der Verzeichnisstruktur – ideal für übergreifende Muster wie verteilte Testdateien.",
+          "example": "Wie eine Brandschutzordnung, die automatisch strengere Regeln fuer die Kueche als fuer die Bueroetage vorsieht, rein basierend darauf, in welchem Raum man sich befindet - pfadbasierte Regeln wenden automatisch die richtige Konvention an, je nachdem, welche Dateien bearbeitet werden, unabhaengig davon, wo diese Dateien liegen."
+        },
+        {
+          "id": 41,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie möchten einen benutzerdefinierten Slash-Befehl `/review` erstellen, der die Standard-Code-Review-Checkliste Ihres Teams ausführt. Er soll für jeden Entwickler verfügbar sein, sobald das Repository geklont oder aktualisiert wird.",
+          "question": "Wo sollten Sie die Befehlsdatei erstellen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "In `~/.claude/commands/` im Home-Verzeichnis jedes Entwicklers.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Im Projekt-Repository unter `.claude/commands/`.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "In `.claude/config.json` als Array von Befehlen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "In der Root-Projekt-CLAUDE.md.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Benutzerdefinierte Slash-Befehle unter `.claude/commands/` im Projekt-Repository sind versionskontrolliert und stehen automatisch jedem Entwickler zur Verfügung, der das Repo klont oder aktualisiert.",
+          "example": "Wie wenn man die Standard-Meeting-Agenda des Teams im gemeinsamen Team-Laufwerk statt nur auf dem eigenen Laptop ablegt - jede neue Person im Team erhaelt sie automatisch, ohne zusaetzlichen Einrichtungsschritt."
+        },
+        {
+          "id": 42,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Die CLAUDE.md Ihres Teams ist auf über 500 Zeilen angewachsen und vermischt TypeScript-Konventionen, Testanleitungen, API-Muster und Deployment-Verfahren. Entwickler finden es schwer, die richtigen Abschnitte zu finden und zu aktualisieren.",
+          "question": "Welchen Ansatz unterstützt Claude Code, um projektweite Anweisungen in fokussierte thematische Module zu organisieren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Eine `.claude/config.yaml` definieren, die Dateimuster bestimmten Abschnitten in CLAUDE.md zuordnet.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Separate Markdown-Dateien in `.claude/rules/` erstellen, die jeweils ein Thema abdecken (z. B. `testing.md`, `api-conventions.md`).",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Anweisungen in README.md-Dateien in relevanten Unterverzeichnissen aufteilen, die Claude automatisch als Anweisungen lädt.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Mehrere Dateien namens CLAUDE.md auf verschiedenen Ebenen des Verzeichnisbaums erstellen, die übergeordnete Anweisungen jeweils überschreiben.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Claude Code unterstützt ein `.claude/rules/`-Verzeichnis, in dem separate Markdown-Dateien für thematische Anleitungen erstellt werden können, sodass Teams große Anweisungssätze in fokussierte, wartbare Module organisieren können.",
+          "example": "Wie das Aufteilen eines riesigen 500-seitigen Unternehmensrichtlinien-Ordners in beschriftete Mappen - Spesen, Reisen, IT-Sicherheit -, damit man genau den benoetigten Abschnitt findet und aktualisiert, statt sich durch ein einziges unhandliches Dokument zu wuehlen."
+        },
+        {
+          "id": 43,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie erstellen einen benutzerdefinierten Skill `/explore-alternatives`, den Ihr Team nutzt, um Umsetzungsansätze zu brainstormen, bevor einer gewählt wird. Entwickler berichten, dass Claudes nachfolgende Antworten von der Alternativen-Diskussion beeinflusst werden – manchmal mit Bezug auf verworfene Ansätze.",
+          "question": "Wie sollten Sie diesen Skill am effektivsten konfigurieren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Das Präfix `!` im Skill nutzen, um die Explorationslogik als Bash-Subprozess auszuführen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "`context: fork` im Skill-Frontmatter hinzufügen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "In zwei Skills aufteilen – `/explore-start` und `/explore-end` –, um Grenzen zu markieren, an denen der Explorationskontext verworfen werden soll.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Den Skill in `~/.claude/skills/` statt `.claude/skills/` erstellen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "`context: fork` führt den Skill in einem isolierten Subagenten-Kontext aus, sodass Explorationsdiskussionen den Hauptgesprächsverlauf nicht belasten und verworfene Ansätze nachfolgende Arbeit nicht beeinflussen.",
+          "example": "Wie ein Brainstorming mit wilden, unausgereiften Ideen in einem separaten Nebenraum abzuhalten und nur die final gewaehlte Richtung ins Hauptmeeting mitzubringen - so bezieht sich im Hauptmeeting niemand versehentlich weiter auf die verworfenen Ideen."
+        },
+        {
+          "id": 44,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Ihr Team möchte einen GitHub-MCP-Server hinzufügen, um PRs zu durchsuchen und den CI-Status über Claude Code zu prüfen. Jeder der sechs Entwickler hat ein eigenes persönliches GitHub-Zugriffstoken. Sie möchten einheitliches Tooling im Team, ohne Zugangsdaten in die Versionskontrolle einzuchecken.",
+          "question": "Welcher Konfigurationsansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Jeden Entwickler den Server im Benutzer-Scope über `claude mcp add --scope user` hinzufügen lassen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Einen MCP-Server-Wrapper erstellen, der Tokens aus einer `.env`-Datei liest und GitHub-API-Aufrufe proxyt, dann den Wrapper in der Projekt-`.mcp.json` ergänzen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den Server in der Projekt-`.mcp.json` mit Umgebungsvariablen-Substitution (`${GITHUB_TOKEN}`) für die Authentifizierung hinzufügen und die benötigte Variable im Projekt-README dokumentieren.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Den Server im Projekt-Scope mit einem Platzhalter-Token konfigurieren und Entwickler anweisen, ihn lokal zu überschreiben.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Eine Projekt-`.mcp.json` mit Umgebungsvariablen-Substitution ist idiomatisch: eine einzige versionskontrollierte Quelle der Wahrheit für die MCP-Konfiguration, während jeder Entwickler Zugangsdaten per Umgebungsvariable bereitstellt, ohne Geheimnisse einzuchecken.",
+          "example": "Wie eine gemeinsame Spesenabrechnungsvorlage mit einem leeren Feld fuer die 'eigene Mitarbeiter-ID' statt einer fest eingetragenen ID einer einzelnen Person in der Vorlage - alle nutzen dasselbe Formular, tragen aber lokal ihre eigenen Zugangsdaten ein."
+        },
+        {
+          "id": 45,
+          "domain": "Code-Generierung mit Claude Code",
+          "situation": "Sie fügen in einer 120-Dateien-Codebasis Fehlerbehandlungs-Wrapper um externe API-Aufrufe hinzu, in drei Phasen: (1) alle Aufrufstellen und Muster entdecken, (2) den Fehlerbehandlungsansatz gemeinsam entwerfen, (3) die Wrapper konsistent implementieren. In Phase 1 erzeugt Claude eine umfangreiche Ausgabe mit Hunderten von Aufrufstellen samt Kontext, die das Kontextfenster füllt, bevor die Entdeckung abgeschlossen ist.",
+          "question": "Welcher Ansatz ist am effektivsten, um die Aufgabe abzuschließen und dabei die Implementierungskonsistenz zu wahren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Für Phase 1 einen Explore-Subagenten nutzen, um die umfangreiche Entdeckungsausgabe zu isolieren und eine Zusammenfassung zurückzugeben, dann Phasen 2–3 in der Hauptunterhaltung fortsetzen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Alle Phasen in der Hauptunterhaltung durchführen und dabei regelmäßig `/compact` nutzen, um den Kontextverbrauch beim Durcharbeiten der Dateien zu reduzieren.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Auf den Headless-Modus mit `--continue` umsteigen und explizite Kontextzusammenfassungen zwischen Batch-Aufrufen übergeben, um Kontinuität zu wahren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Das Fehlerbehandlungsmuster in CLAUDE.md definieren und Dateien dann in Batches über mehrere Sitzungen verarbeiten, gestützt auf die gemeinsame Memory-Datei für Konsistenz.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Ein Explore-Subagent isoliert die umfangreiche Entdeckungsausgabe in einem separaten Kontext und liefert nur eine prägnante Zusammenfassung zurück, wodurch das Hauptkontextfenster für die gemeinsame Entwurfs- und Implementierungsphase erhalten bleibt.",
+          "example": "Wie wenn man eine Assistenz durchs Lager schickt, die zurueckmeldet 'hier sind die 40 Regale, die neu beschriftet werden muessen', statt jede einzelne Kiste in den Besprechungsraum zu schleppen, waehrend man mit dem Team eigentlich die Beschriftungsstrategie plant."
+        },
+        {
+          "id": 46,
+          "domain": "Kundensupport-Agent",
+          "situation": "Beim Testen bemerken Sie, dass der Agent oft `get_customer` aufruft, wenn Nutzer nach dem Bestellstatus fragen, obwohl `lookup_order` passender wäre.",
+          "question": "Was sollten Sie zuerst prüfen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Einen vorgeschalteten Klassifizierer implementieren, der bestellbezogene Anfragen erkennt und direkt zu `lookup_order` leitet.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Die Anzahl der verfügbaren Tools reduzieren, um die Auswahl zu vereinfachen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Few-Shot-Beispiele zum System-Prompt hinzufügen, die alle möglichen Bestellanfragemuster abdecken.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Tool-Beschreibungen prüfen, um sicherzustellen, dass sie den Zweck jedes Tools klar unterscheiden.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Tool-Beschreibungen sind die primäre Grundlage, auf der das Modell entscheidet, welches Tool aufgerufen wird. Wenn ein Agent konsequent das falsche Tool wählt, ist der erste Diagnoseschritt zu prüfen, ob die Beschreibungen die Zwecke klar trennen.",
+          "example": "Wie eine neue Callcenter-Mitarbeiterin, die Abrechnungsfragen staendig an die falsche Abteilung weiterleitet - bevor man die ganze Person umschult, prueft man erst, ob die Abteilungsbezeichnungen im Telefonsystem einfach schlecht beschriftet sind."
+        },
+        {
+          "id": 47,
+          "domain": "Kundensupport-Agent",
+          "situation": "Ihr Agent bearbeitet Einzelanliegen mit 94% Genauigkeit. Enthält eine Nachricht jedoch mehrere Anliegen gleichzeitig, sinkt die Tool-Auswahlgenauigkeit auf 58%. Der Agent löst meist nur ein Anliegen oder vermischt Parameter zwischen den Anfragen.",
+          "question": "Welcher Ansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Eine Vorverarbeitungsschicht implementieren, die per separatem Modellaufruf Nachrichten mit mehreren Anliegen in Einzelanfragen zerlegt, jede unabhängig bearbeitet und die Ergebnisse zusammenführt.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Verwandte Tools zu weniger universellen Tools zusammenfassen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Few-Shot-Beispiele zum Prompt hinzufügen, die korrektes Vorgehen und korrekte Tool-Reihenfolge bei Anfragen mit mehreren Anliegen zeigen.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Antwortvalidierung implementieren, die unvollständige Antworten erkennt und den Agenten automatisch erneut auffordert, übersehene Anliegen zu lösen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Few-Shot-Beispiele, die korrektes Vorgehen und korrekte Tool-Reihenfolge zeigen, sind am effektivsten, weil der Agent bei Einzelanliegen bereits gut abschneidet – er braucht Anleitung zur Zerlegung und getrennten Behandlung mehrerer Anliegen.",
+          "example": "Wie eine kompetente Mitarbeiterin, die einzelne Anfragen perfekt bearbeitet, aber ins Straucheln geraet, wenn eine Kundin drei Anliegen in einer E-Mail schildert - man schult nicht ihren gesamten Ansatz um, sondern zeigt ihr ein paar durchgerechnete Beispiele, wie man eine mehrteilige Anfrage aufteilt und nachverfolgt."
+        },
+        {
+          "id": 48,
+          "domain": "Kundensupport-Agent",
+          "situation": "Bei einfachen Anfragen löst Ihr Agent das Anliegen in 3–4 Tool-Aufrufen mit 91% Erfolg. Bei komplexen Anfragen benötigt er durchschnittlich 12+ Tool-Aufrufe bei nur 54% Erfolg – oft werden Probleme nacheinander untersucht und Kundendaten für jedes Anliegen redundant abgerufen.",
+          "question": "Welche Änderung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Explizite Prüfpunkte zwischen den Phasen hinzufügen, an denen der Agent den Fortschritt nach Lösung jedes Anliegens festhalten muss, bevor er weitergeht.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Die Anzahl der Tools reduzieren, indem `get_customer`, `lookup_order` und abrechnungsbezogene Tools zu einem einzigen `investigate_issue`-Tool zusammengefasst werden.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Die Anfrage in einzelne Anliegen zerlegen und diese dann parallel mit gemeinsamem Kundenkontext untersuchen, bevor eine abschließende Lösung synthetisiert wird.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Few-Shot-Beispiele zum System-Prompt hinzufügen, die ideale Tool-Aufruf-Sequenzen für verschiedene vielschichtige Abrechnungsszenarien zeigen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Die Zerlegung in einzelne Anliegen mit paralleler Untersuchung bei gemeinsamem Kontext beseitigt redundanten Datenabruf und reduziert die Gesamtzahl der Tool-Aufruf-Schleifen, indem parallelisiert wird, bevor eine einzige Lösung synthetisiert wird.",
+          "example": "Wie ein Mechaniker, der nicht nacheinander erst die Bremsen, dann den Motor, dann die Elektronik prueft und dabei jedes Mal erneut die komplette Servicehistorie des Autos zieht, sondern die Historie einmal zieht und drei Fachkraefte parallel ihre jeweiligen Systeme pruefen laesst."
+        },
+        {
+          "id": 49,
+          "domain": "Kundensupport-Agent",
+          "situation": "Ihr Agent erreicht 55% Erstlösungsquote, deutlich unter dem Ziel von 80%. Logs zeigen, dass er einfache Fälle (Standardersatz bei Fotobeleg) eskaliert, während er versucht, komplexe Richtlinienausnahmen eigenständig zu behandeln.",
+          "question": "Was ist der effektivste Weg, die Eskalationskalibrierung zu verbessern?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Den Agenten verpflichten, vor jeder Antwort seine Konfidenz auf einer Skala von 1–10 selbst einzuschätzen und automatisch an Menschen weiterzuleiten, wenn die Konfidenz unter einem Schwellenwert liegt.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Ein separates Klassifizierungsmodell einsetzen, das anhand historischer Tickets vorhersagt, welche Anfragen eine Eskalation benötigen, bevor der Hauptagent zu arbeiten beginnt.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Explizite Eskalationskriterien mit Few-Shot-Beispielen zum System-Prompt hinzufügen, die zeigen, wann eskaliert und wann eigenständig gelöst werden soll.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Sentiment-Analyse implementieren, um den Frustrationsgrad des Kunden zu bestimmen, und automatisch eskalieren, wenn ein negativer Stimmungsschwellenwert überschritten wird.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Explizite Eskalationskriterien mit Few-Shot-Beispielen adressieren direkt die Grundursache – unklare Entscheidungsgrenzen zwischen einfachen und komplexen Fällen –, ohne zusätzliche Infrastruktur.",
+          "example": "Wie eine neue Verkaeuferin, die unsicher ist, wann sie eine Rueckgabe selbst genehmigen darf und wann sie die Filialleitung rufen muss - eine klare, schriftliche Regel mit zwei, drei durchgerechneten Beispielen ('unter 50 Euro mit Beleg: selbst genehmigen; Ausnahme von der Richtlinie: Filialleitung rufen') behebt die Fehleinschaetzung schnell."
+        },
+        {
+          "id": 50,
+          "domain": "Kundensupport-Agent",
+          "situation": "Nach Aufruf von `get_customer` und `lookup_order` hat der Agent alle verfügbaren Systemdaten, steht aber weiterhin vor Unsicherheit.",
+          "question": "Welche Situation rechtfertigt eine Eskalation am meisten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Ein Kunde möchte eine gestern versandte, morgen ankommende Bestellung stornieren. Der Agent sollte eskalieren, weil der Kunde es sich nach Erhalt des Pakets anders überlegen könnte.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Ein Kunde behauptet, eine Bestellung nicht erhalten zu haben, aber das Tracking zeigt Zustellung und Unterschrift vor drei Tagen an seiner Adresse. Der Agent sollte eskalieren, weil widersprüchliche Beweise die Kundenbeziehung belasten könnten.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Ein Kunde fordert Preisangleichung an einen Mitbewerber. Ihre Richtlinien erlauben Anpassungen bei Preissenkungen auf der eigenen Website, sagen aber nichts zu Mitbewerberpreisen. Der Agent sollte wegen der Richtlinienauslegung eskalieren.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Eine Kundennachricht enthält sowohl eine Abrechnungsfrage als auch eine Produktretoure. Der Agent sollte eskalieren, damit ein Mensch beide Anliegen in einer Interaktion koordiniert.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Dies ist eine echte Richtlinienlücke: Die Unternehmensregeln decken Preissenkungen auf der eigenen Website ab, sagen aber nichts zu Mitbewerberpreisen. Der Agent darf keine Richtlinie erfinden und sollte für menschliches Urteil eskalieren.",
+          "example": "Wie eine Kassiererin, die einen ausgedruckten Rabattgutschein souveraen einloesen kann, aber die Filialleitung rufen muss, wenn eine Kundin einen Preisvergleich mit einem Geschaeft verlangt, das die Gutscheinregeln gar nicht erwaehnen - das ist keine Vorsicht um ihrer selbst willen, sondern eine echte Luecke, fuer die noch niemand eine Regel geschrieben hat."
+        },
+        {
+          "id": 51,
+          "domain": "Kundensupport-Agent",
+          "situation": "Produktions-Logs zeigen, dass Ihr Agent in 12% der Fälle `get_customer` überspringt und `lookup_order` direkt nur mit dem vom Kunden angegebenen Namen aufruft, was gelegentlich zu falsch zugeordneten Konten und fehlerhaften Rückerstattungen führt.",
+          "question": "Welche Änderung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Few-Shot-Beispiele hinzufügen, die zeigen, dass der Agent immer zuerst `get_customer` aufruft, selbst wenn Kunden freiwillig Bestelldetails angeben.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Einen Routing-Klassifizierer implementieren, der jede Anfrage analysiert und nur eine Teilmenge passender Tools freischaltet.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Eine programmatische Vorbedingung hinzufügen, die `lookup_order` und `process_refund` blockiert, bis `get_customer` eine verifizierte Kunden-ID zurückgibt.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Den System-Prompt verstärken, dass die Kundenverifizierung über `get_customer` vor jeder Bestelloperation zwingend ist.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Eine programmatische Vorbedingung liefert eine deterministische Garantie, dass die erforderliche Reihenfolge eingehalten wird, und schließt aus, dass die Verifizierung übersprungen wird, unabhängig vom Verhalten des LLM.",
+          "example": "Wie das System einer Bankangestellten, das den Zugriff auf einen Kontodatensatz technisch erst freigibt, nachdem ein Ausweis gescannt und verifiziert wurde - man verlaesst sich nicht darauf, dass die Person jedes Mal an die Ausweispruefung denkt, sondern baut es fest in den Arbeitsablauf ein, sodass ein Ueberspringen gar nicht moeglich ist."
+        },
+        {
+          "id": 52,
+          "domain": "Kundensupport-Agent",
+          "situation": "Die Kundenzufriedenheit ist bei komplexen Abrechnungsstreitigkeiten 15% niedriger als bei einfachen Fällen, selbst wenn die Lösung fachlich korrekt ist. Der Agent liefert korrekte Lösungen, erklärt die Begründung aber inkonsistent – manchmal fehlen Richtliniendetails oder nächste Schritte, von Fall zu Fall unterschiedlich. Sie möchten die Lösungsqualität ohne zusätzliche menschliche Aufsicht verbessern.",
+          "question": "Welcher Ansatz ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Eine Selbstprüfungsstufe hinzufügen, in der der Agent einen Antwortentwurf auf Vollständigkeit bewertet – löst er das Anliegen, enthält er relevanten Kontext und antizipiert er Folgefragen?",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Eine Bestätigungsstufe hinzufügen, in der der Agent vor Abschluss fragt: „Löst das Ihr Anliegen vollständig?“",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Das Modell für komplexe Fälle von Haiku auf Sonnet upgraden, basierend auf einer definierten Komplexitätskennzahl.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Few-Shot-Beispiele im System-Prompt implementieren, die vollständige Erklärungen für fünf häufige komplexe Falltypen zeigen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Eine Selbstprüfungsstufe (Evaluator-Optimizer-Muster) zwingt den Agenten, seinen eigenen Entwurf anhand konkreter Kriterien zu bewerten, bevor er ihn präsentiert, und erfasst so fallspezifische Lücken ohne menschliche Aufsicht.",
+          "example": "Wie eine Anwaeltin, die ihren eigenen Brief noch einmal liest, bevor sie ihn abschickt, und prueft: 'Habe ich die Frage wirklich beantwortet, das Warum erklaert und die naechsten Schritte genannt?' - ein eingebauter Selbstpruefungsschritt entdeckt Luecken, die ein erster Entwurf uebersieht, ganz ohne eine zweite Person."
+        },
+        {
+          "id": 53,
+          "domain": "Kundensupport-Agent",
+          "situation": "Produktionsdaten zeigen, dass Ihr Agent durchschnittlich 4+ API-Schleifen pro Lösung benötigt. Die Analyse zeigt, dass Claude `get_customer` und `lookup_order` oft in separaten aufeinanderfolgenden Runden anfordert, obwohl beide von Anfang an benötigt werden.",
+          "question": "Was ist der effektivste Weg, die Anzahl der Schleifen zu reduzieren?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Spekulative Ausführung implementieren, die automatisch wahrscheinlich benötigte Tools parallel zu jedem angeforderten Tool aufruft und alle Ergebnisse unabhängig von der Anfrage zurückgibt.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "`max_tokens` erhöhen, damit Claude mehr Raum zum Planen hat und Tool-Anfragen natürlich kombiniert.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Zusammengesetzte Tools wie `get_customer_with_orders` erstellen, die gängige Abfragekombinationen in einzelnen Aufrufen bündeln.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Claude im Prompt anweisen, Tool-Anfragen in einer Runde zu bündeln und alle Ergebnisse vor dem nächsten API-Aufruf gemeinsam zurückzugeben.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Claude anzuweisen, verwandte Tool-Anfragen in einer Runde zu bündeln, nutzt seine native Fähigkeit, mehrere Tools gleichzeitig anzufordern, und behebt das sequenzielle Aufrufmuster mit minimaler architektonischer Änderung.",
+          "example": "Wie ein Kellner, der zuerst die Getraenkebestellung aufnimmt, dann komplett zur Kueche zurueaeuft, um danach erneut zu kommen und die Essensbestellung separat aufzunehmen - statt beides gleich am Tisch gemeinsam aufzunehmen und zusammen weiterzugeben."
+        },
+        {
+          "id": 54,
+          "domain": "Kundensupport-Agent",
+          "situation": "Kunden beziehen sich auf konkrete Beträge (z. B. „der 15%-Rabatt, den ich erwähnt habe“), aber der Agent antwortet mit falschen Werten. Diese Details wurden vor 20+ Runden erwähnt und in vage Zusammenfassungen wie „Aktionspreise wurden besprochen“ verdichtet.",
+          "question": "Welche Lösung ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Den Zusammenfassungs-Schwellenwert von 70% auf 85% erhöhen, damit Unterhaltungen mehr Raum haben, bevor die Zusammenfassung ausgelöst wird.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Den vollständigen Gesprächsverlauf extern speichern und Abruf implementieren, wenn der Agent Verweise wie „wie ich erwähnt habe“ erkennt.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Transaktionale Fakten (Beträge, Daten, Bestellnummern) in einen dauerhaften „Fallfakten“-Block extrahieren, der in jedem Prompt außerhalb des zusammengefassten Verlaufs enthalten ist.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Den Zusammenfassungs-Prompt überarbeiten, um explizit alle Zahlen, Prozentsätze, Daten und Kundenerwartungen wörtlich zu bewahren.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Zusammenfassung verliert naturgemäß präzise Details. Das Extrahieren transaktionaler Fakten in einen strukturierten Block außerhalb des zusammengefassten Verlaufs bewahrt kritische Informationen unabhängig davon, wie viele Runden zusammengefasst wurden.",
+          "example": "Wie eine Patientenakte, die das Feld 'Allergien: Penicillin' fest oben anzeigt, egal wie viele Besuchsnotizen im Laufe der Jahre hinzukommen und zusammengefasst werden - kritische Fakten duerfen nicht verloren gehen, nur weil die umgebende Erzaehlung komprimiert wird."
+        },
+        {
+          "id": 55,
+          "domain": "Kundensupport-Agent",
+          "situation": "Ihr `get_customer`-Tool liefert bei Namenssuche alle Treffer. Bei mehreren Ergebnissen wählt Claude aktuell den Kunden mit der jüngsten Bestellung, aber Produktionsdaten zeigen, dass dies bei mehrdeutigen Treffern in 15% der Fälle das falsche Konto auswählt.",
+          "question": "Wie sollten Sie das angehen?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Ein Konfidenz-Bewertungssystem implementieren, das oberhalb von 85% Konfidenz eigenständig handelt und unterhalb des Schwellenwerts nachfragt.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Claude anweisen, bei mehreren Treffern von `get_customer` einen zusätzlichen Identifikator (E-Mail, Telefon oder Bestellnummer) anzufordern, bevor kundenspezifische Aktionen erfolgen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "`get_customer` so ändern, dass nur der wahrscheinlichste Treffer per Ranking-Algorithmus zurückgegeben wird, um Mehrdeutigkeit zu beseitigen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Few-Shot-Beispiele zum Prompt hinzufügen, die korrektes Vorgehen und korrekte Tool-Reihenfolge bei mehrdeutigen Treffern zeigen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Einen zusätzlichen Identifikator anzufordern ist der zuverlässigste Weg, Mehrdeutigkeit aufzulösen, weil der Kunde die eigene Identität sicher kennt – eine kleine Zusatzrunde gegen eine Fehlerquote von 15%.",
+          "example": "Wie eine Empfangskraft, die bei zwei Patienten namens John Schmidt nachfragt 'koennen Sie bitte Ihr Geburtsdatum bestaetigen?', statt anhand des zuletzt eingecheckten Patienten zu raten - eine guenstige Rueckfrage verhindert eine teure Verwechslung."
+        },
+        {
+          "id": 56,
+          "domain": "Kundensupport-Agent",
+          "situation": "Wenn Kunden das Wort „Konto“ in ihrer Nachricht verwenden, ruft der Agent in 78% der Fälle zuerst `get_customer` auf. Formulieren Kunden ähnliche Anfragen ohne „Konto“, ruft er in 93% der Fälle zuerst `lookup_order` auf. Die Tool-Beschreibungen sind klar und eindeutig.",
+          "question": "Was ist die wahrscheinlichste Grundursache?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Der System-Prompt enthält stichwortsensitive Anweisungen, die das Verhalten anhand von Begriffen wie „Konto“ steuern und unbeabsichtigte Tool-Auswahlmuster erzeugen.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Das Basistraining des Modells erzeugt Assoziationen zwischen „Konto“-Terminologie und kundenbezogenen Operationen, die Tool-Beschreibungen überschreiben.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Das Modell benötigt mehr Trainingsdaten zu Nachrichten mit mehreren Konzepten und sollte auf Beispiele mit beiden Begriffen feinabgestimmt werden.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Tool-Beschreibungen benötigen zusätzliche Negativbeispiele, die festlegen, wann jedes Tool NICHT zu verwenden ist.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Das systematische, stichwortgesteuerte Muster deutet stark auf explizite Routing-Logik im System-Prompt hin, die auf das Wort „Konto“ reagiert. Da die Tool-Beschreibungen bereits klar sind, liegt die Ursache wahrscheinlich auf Prompt-Ebene.",
+          "example": "Wie wenn auffaellt, dass eine bestimmte Mitarbeiterin Anrufe immer merkwuerdig weiterleitet, sobald eine Kundin das Wort 'dringend' sagt - man wuerde nicht zuerst alle anderen Mitarbeitenden umschulen, sondern zuerst die persoenlichen Notizen bzw. Anweisungen dieser einen Person auf eine an dieses Stichwort geknuepfte Regel pruefen."
+        },
+        {
+          "id": 57,
+          "domain": "Kundensupport-Agent",
+          "situation": "Der Agent ruft oft `get_customer` auf, wenn Nutzer nach Bestellungen fragen, statt `lookup_order`. Beide Tools haben minimale Beschreibungen („Ruft Kundeninformationen ab“ / „Ruft Bestelldetails ab“) und akzeptieren ähnlich aussehende Identifikator-Formate.",
+          "question": "Was ist der effektivste erste Schritt?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Eine Routing-Schicht implementieren, die Nutzereingaben vor jeder Runde analysiert und das richtige Tool anhand erkannter Stichwörter und ID-Muster vorauswählt.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Beide Tools zu einem einzigen `lookup_entity` zusammenfassen, das jeden Identifikator akzeptiert und intern entscheidet, welches Backend abgefragt wird.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Few-Shot-Beispiele zum System-Prompt hinzufügen, die korrekte Tool-Auswahlmuster zeigen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Beschreibung jedes Tools um Eingabeformate, Beispielanfragen, Grenzfälle und Abgrenzungen erweitern, wann es im Vergleich zu ähnlichen Tools zu verwenden ist.",
+              "correct": true
+            }
+          ],
+          "correctLetter": "D",
+          "explanation": "Erweiterte Tool-Beschreibungen beheben direkt die Grundursache – minimale Beschreibungen, die dem Modell nicht genug Informationen geben, um ähnliche Tools zu unterscheiden. Das ist ein aufwandsarmer erster Schritt mit hoher Wirkung.",
+          "example": "Wie zwei Stellenausschreibungen, die beide vage 'kuemmert sich um Kundenanliegen' heissen - Bewerbende (oder hier: das Modell) koennen sie nicht unterscheiden. Genau auszubuchstabieren, wofuer jede Rolle zustaendig ist, mit Beispielaufgaben und Grenzfaellen, ist der guenstige, wirkungsvolle erste Schritt."
+        },
+        {
+          "id": 58,
+          "domain": "Kundensupport-Agent",
+          "situation": "Sie implementieren die Agentenschleife für Ihren Support-Agenten. Nach jedem Claude-API-Aufruf müssen Sie entscheiden, ob die Schleife fortgesetzt wird (Tools ausführen und Claude erneut aufrufen) oder gestoppt wird (dem Kunden die finale Antwort präsentieren).",
+          "question": "Was bestimmt diese Entscheidung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Das Feld `stop_reason` in Claudes Antwort prüfen – fortsetzen bei `tool_use`, stoppen bei `end_turn`.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Claudes Text auf Formulierungen wie „Ich bin fertig“ prüfen – natürlichsprachliche Signale zeigen Aufgabenabschluss an.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Eine maximale Anzahl von Iterationen (z. B. 10 Aufrufe) festlegen und stoppen, wenn diese erreicht ist, unabhängig davon, ob Claude weitere Arbeit signalisiert.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Prüfen, ob die Antwort Assistenten-Text enthält – wenn Claude erklärenden Text erzeugt hat, sollte die Schleife enden.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "`stop_reason` ist Claudes explizites strukturiertes Signal zur Schleifensteuerung: `tool_use` bedeutet, Claude möchte ein Tool ausführen und Ergebnisse zurückerhalten, `end_turn` bedeutet, die Antwort ist abgeschlossen.",
+          "example": "Wie ein Telefonsystem mit einem eindeutigen, expliziten Signal fuer 'bitte warten, ich muss etwas nachschauen' im Gegensatz zu 'ich bin fertig' - man raet nicht anhand des Tonfalls, sondern verlaesst sich auf das explizite Signal, das genau dafuer gebaut wurde."
+        },
+        {
+          "id": 59,
+          "domain": "Kundensupport-Agent",
+          "situation": "Der Agent interpretiert Ausgaben Ihrer MCP-Tools falsch: Unix-Zeitstempel von `get_customer`, ISO-8601-Daten von `lookup_order` und numerische Statuscodes von einem anderen Tool. Einige Tools sind Drittanbieter-MCP-Server, die Sie nicht ändern können.",
+          "question": "Welcher Ansatz zur Datenformat-Normalisierung ist am wartbarsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Einen PostToolUse-Hook nutzen, um Tool-Ausgaben abzufangen und Formatierungstransformationen anzuwenden, bevor der Agent sie verarbeitet.",
+              "correct": true
+            },
+            {
+              "letter": "B",
+              "text": "Tools, die Sie kontrollieren, so ändern, dass sie menschenlesbare Formate zurückgeben, und Wrapper für Drittanbieter-Tools erstellen.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Ein Tool `normalize_data` erstellen, das der Agent nach jedem Datenabruf aufruft, um Werte zu transformieren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Detaillierte Formatdokumentation zum System-Prompt hinzufügen, die die Datenkonventionen jedes Tools erklärt.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "A",
+          "explanation": "Ein PostToolUse-Hook bietet einen zentralen, deterministischen Punkt, um alle Tool-Ausgaben – auch von Drittanbieter-MCP-Daten – abzufangen und zu normalisieren, bevor der Agent sie verarbeitet. Das ist wartbarer als sich auf die Interpretation des LLM zu verlassen.",
+          "example": "Wie eine Poststelle, die jedes eingehende Paketetikett in ein einheitliches Firmenformat umwandelt, bevor es eine Abteilung erreicht - statt darauf zu vertrauen, dass jede einzelne Abteilung fuenf verschiedene Versandformate selbst korrekt interpretiert."
+        },
+        {
+          "id": 60,
+          "domain": "Kundensupport-Agent",
+          "situation": "Der Agent wählt manchmal `get_customer`, obwohl `lookup_order` passender wäre, besonders bei mehrdeutigen Anfragen wie „Ich brauche Hilfe zu meinem letzten Kauf“. Sie entscheiden sich, Few-Shot-Beispiele zum System-Prompt hinzuzufügen, um die Tool-Auswahl zu verbessern.",
+          "question": "Welcher Ansatz adressiert das Problem am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Explizite „verwenden, wenn“- und „nicht verwenden, wenn“-Hinweise in jeder Tool-Beschreibung für mehrdeutige Fälle ergänzen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Beispiele nach Tool gruppiert hinzufügen – erst alle `get_customer`-Szenarien, dann alle `lookup_order`-Szenarien.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "4–6 Beispiele gezielt für mehrdeutige Szenarien hinzufügen, jeweils mit Begründung, warum ein Tool gegenüber plausiblen Alternativen gewählt wurde.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "10–15 Beispiele klarer, eindeutiger Anfragen hinzufügen, die die korrekte Tool-Wahl für typische Szenarien je Tool zeigen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Few-Shot-Beispiele gezielt auf die spezifischen mehrdeutigen Szenarien auszurichten, in denen Fehler auftreten, mit expliziter Begründung, vermittelt dem Modell den vergleichenden Entscheidungsprozess für Grenzfälle – effektiver als generische Beispiele oder deklarative Regeln.",
+          "example": "Wie Schulungsunterlagen fuer neue Mitarbeitende, die nicht einfach 20 einfache, offensichtliche Beispiele auflisten, sondern sich auf die 5 wirklich kniffligen Grenzfaelle konzentrieren, jeweils mit kurzer Begruendung 'deshalb X statt Y' - genau das verbessert die Urteilsfaehigkeit bei schwierigen Faellen."
+        }
+      ]
+    },
+    "ccar-p": {
+      "source": "Offizielles Anthropic-Material: 3 illustrative Beispielfragen aus dem Claude Certified Architect – Professional Exam Guide v1.0 (gültig ab Juli 2026). Anthropic weist ausdrücklich darauf hin, dass diese nicht aus dem echten Fragenpool stammen — als Stilbeispiele zu verstehen, nicht als vollständige Übungsprüfung.",
+      "questions": [
+        {
+          "id": 1,
+          "domain": "Domäne 3 — Integration",
+          "situation": "Ein Team stellt einen Kundensupport-Agenten bereit, der Tickets lesen, Antworten entwerfen, Rückerstattungen auslösen und Benutzerkonten löschen kann. Das Support-Personal benötigt tatsächlich nur das Lesen von Tickets und das Entwerfen von Antworten.",
+          "question": "Welche Änderung reduziert das Risiko nach dem Prinzip der geringsten Rechte am besten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Protokollierung zu den Rückerstattungs- und Löschfunktionen hinzufügen, damit Missbrauch später nachvollzogen werden kann.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Die Rückerstattungs- und Löschfunktionen vollständig aus der Konfiguration des Agenten entfernen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Alle Funktionen behalten, aber eine Bestätigung vor Rückerstattungen und Löschungen einfügen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Den Agenten durch ein größeres Modell ersetzen, das Anweisungen zuverlässiger befolgt.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Geringste Rechte bedeutet, Fähigkeiten zu entfernen, die die Rolle nicht benötigt, und damit die Angriffsfläche zu beseitigen statt sie nur zu überwachen oder abzusichern. Protokollierung (A) und Bestätigungen (C) sind erkennende/kompensierende Kontrollen, keine Entfernung unnötiger Rechte; die Modellgröße (D) hat nichts mit dem Berechtigungsumfang zu tun.",
+          "example": "Wie man einer Kassiererin im Einzelhandel nicht den Generalschluessel zum Tresor gibt, nur weil sie ihn theoretisch einmal brauchen koennte - man gibt nur die Schluessel aus, die fuer die taegliche Arbeit wirklich noetig sind, und entfernt den Rest, statt nur genauer hinzusehen."
+        },
+        {
+          "id": 2,
+          "domain": "Domäne 2 — Claude-Modelle, Prompting & Context Engineering",
+          "situation": "Eine Anwendung sendet bei jeder Anfrage denselben 8.000-Token-System-Prompt samt Richtliniendokument, gefolgt von einer kurzen, wechselnden Nutzernachricht. Latenz und Kosten sind beide ein Anliegen.",
+          "question": "Welche Optimierung adressiert beides am direktesten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Das Richtliniendokument auf die ersten 1.000 Tokens kürzen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Auf das kleinste verfügbare Modell umsteigen, unabhängig von der Eignung für die Aufgabe.",
+              "correct": false
+            },
+            {
+              "letter": "C",
+              "text": "Den statischen System-Prompt und die Richtlinie vor den dynamischen Inhalt stellen und Prompt-Caching aktivieren.",
+              "correct": true
+            },
+            {
+              "letter": "D",
+              "text": "Das Richtliniendokument in einen Few-Shot-Beispielblock verschieben.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "C",
+          "explanation": "Stabile Inhalte zuerst anzuordnen und Prompt-Caching zu aktivieren erlaubt die Wiederverwendung wiederkehrender Präfixe, was sowohl die Zeit bis zum ersten Token als auch die Kosten pro Anfrage senkt, ohne benötigten Kontext zu verlieren. Kürzen (A) verliert benötigte Richtlinieninhalte; blindes Verkleinern (B) riskiert Qualität; die Verlagerung in Few-Shot (D) erzeugt kein cachebares, wiederverwendbares Präfix.",
+          "example": "Wie ein Callcenter-Skript, das dauerhaft am Bildschirm angeheftet bleibt, statt dass eine Mitarbeiterin vor jedem Anruf die komplette Unternehmensrichtlinie erneut aus dem Gedaechtnis eintippt - der statische Teil wird einmal vorbereitet und wiederverwendet, was bei jeder Wiederholung Zeit und Aufwand spart."
+        },
+        {
+          "id": 3,
+          "domain": "Domäne 4 — Evaluation, Testing & Optimierung",
+          "situation": "Ein RAG-System liefert nach einer Dokumentenaktualisierung plötzlich selbstbewusste, aber falsche Antworten, während Latenz und Modellversion unverändert sind.",
+          "question": "Was ist der wahrscheinlichste erste Ansatzpunkt für die Untersuchung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Modellgewichte haben sich stillschweigend geändert.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Der Retrieval-/Indexierungsschritt liefert irrelevante oder veraltete Textabschnitte.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Die Temperatureinstellung ist zu niedrig.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Das Kontextfenster ist geschrumpft.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Selbstbewusste, aber falsche Antworten nach einer Dokumentenaktualisierung, bei unverändertem Modell und unveränderter Latenz, deuten darauf hin, dass das Retrieval dem Modell schlechten Kontext liefert – etwa durch eine fehlerhafte Neuindizierung oder nicht passende Embeddings. Die anderen Optionen würden nicht speziell durch eine Dokumentenaktualisierung ausgelöst.",
+          "example": "Wie eine Bibliothekarin, die selbstbewusst Buecher anhand eines Katalogs herausgibt, der nach der Umsortierung der Regale nicht aktualisiert wurde - sie klingt genauso sicher wie zuvor, zeigt aber jetzt auf das falsche Regal; man prueft den Katalog (den Index), nicht die Zuversicht der Bibliothekarin."
+        }
+      ]
+    },
+    "ccao-f": {
+      "source": "Offizielles Anthropic-Material: 3 illustrative Beispielfragen aus dem Claude Certified Associate – Foundations Exam Guide v1.0 (gültig ab Juli 2026). Anthropic weist ausdrücklich darauf hin, dass diese nicht aus dem echten Fragenpool stammen — als Stilbeispiele zu verstehen, nicht als vollständige Übungsprüfung.",
+      "questions": [
+        {
+          "id": 1,
+          "domain": "Domäne 2 — Bewertung und Validierung von Ausgaben",
+          "situation": "Ein Associate bittet Claude, eine neue Verordnung zusammenzufassen, und Claude erstellt eine selbstbewusste Zusammenfassung mit Verweis auf eine konkrete Unterabschnittsnummer.",
+          "question": "Was ist die angemessenste Handlung, bevor die Zusammenfassung an das Compliance-Team gesendet wird?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Unverändert senden, da Claude hohe Konfidenz zeigte.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Den zitierten Unterabschnitt vor der Weitergabe gegen den offiziellen Verordnungstext prüfen.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Claude bitten, die eigene Konfidenz einzuschätzen, und bei hoher Einschätzung senden.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Zusammenfassung formeller formulieren und dann senden.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Sprachmodelle können konkret wirkende Details wie Zitatnummern erfinden – eine Halluzination. Faktenaussagen, insbesondere Zitate für ein Compliance-Publikum, gegen eine autoritative Quelle zu prüfen, ist der erforderliche Sorgfaltsschritt. Selbst eingeschätzte Konfidenz (A, C) ist kein verlässliches Genauigkeitssignal, und Umformulierung (D) adressiert nicht die Korrektheit.",
+          "example": "Wie ein junger Analyst, der aus dem Gedaechtnis selbstbewusst 'Abschnitt 4.2' eines Vertrags zitiert - eine gute Fuehrungskraft prueft den tatsaechlichen Vertrag, bevor diese Nummer in ein kundenseitiges Memo gelangt, denn selbstbewusst klingende Erinnerung ist nicht dasselbe wie Korrektheit."
+        },
+        {
+          "id": 2,
+          "domain": "Domäne 3 — Produkt- und Modellauswahl",
+          "situation": "Ein Associate muss eine große Menge kurzer Kundenantwort-Entwürfe erstellen, bei denen Geschwindigkeit und Kosten wichtiger sind als tiefes Schlussfolgern.",
+          "question": "Welche Wahl passt am besten zur Aufgabe?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Für jede Antwort das leistungsfähigste, teuerste Modell verwenden, um die Qualität zu maximieren.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Ein schnelleres, günstigeres Modell verwenden, das für einfache Aufgaben mit hohem Volumen geeignet ist.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Alle Produktfunktionen deaktivieren, um Kosten zu senken.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Zu einer anderen KI-Plattform wechseln.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Die Modellwahl an die Aufgabenanforderungen anzupassen bedeutet, ein schnelleres, günstigeres Modell für einfache Aufgaben mit hohem Volumen einzusetzen und das leistungsfähigste Modell komplexem Schlussfolgern vorzubehalten. Immer das Topmodell zu nutzen (A) verschwendet Kosten- und Latenzbudget; Funktionen zu deaktivieren (C) oder die Plattform zu wechseln (D) adressiert die Abwägung nicht.",
+          "example": "Wie die Verwendung einer schnellen Standard-Vorlage fuer routinemaessige 'Ihr Paket wurde versandt'-E-Mails, statt jede einzelne von der erfahrensten und teuersten Texterin persoenlich verfassen zu lassen - die besten Talente, und das leistungsfaehigste Modell, hebt man sich fuer Faelle auf, die wirklich tiefgehende Beurteilung brauchen."
+        },
+        {
+          "id": 3,
+          "domain": "Domäne 6 — Governance, Risiko und verantwortungsvolle Nutzung",
+          "situation": "Ein Projektmanager möchte eine Tabelle mit Kundennamen und Kontonummern hochladen, damit Claude Trends analysieren kann. Die Unternehmensrichtlinie schränkt die Weitergabe regulierter personenbezogener Daten ein.",
+          "question": "Was ist die angemessenste Handlung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Datei unverändert hochladen, da die Analyse intern ist.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Die personenbezogenen Identifikatoren vor dem Hochladen entfernen oder anonymisieren, im Einklang mit der Richtlinie.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Die Datei hochladen, aber Claude anweisen, sie nicht zu speichern.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Die Analyse ganz auslassen.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Datenschutz- und Sensibilitätsvorkehrungen anzuwenden bedeutet, regulierte Identifikatoren vor der Nutzung zu schwärzen oder zu anonymisieren, damit die Analyse ohne Offenlegung geschützter Daten erfolgen kann. Unverändertes Hochladen (A) verstößt gegen die Richtlinie; die Anweisung, Daten nicht zu speichern (C), erfüllt die Richtlinienkontrolle nicht; die Analyse auszulassen (D) ist unnötig, wenn Anonymisierung sie ermöglicht.",
+          "example": "Wie das Schwaerzen von Kundendaten wie Sozialversicherungsnummern auf einem ausgedruckten Bericht, bevor er einer externen Beraterin fuer eine Trendanalyse uebergeben wird - die Analyse braucht die rohen Identifikatoren nicht, um das Muster zu erkennen, also entfernt man sie vorher."
+        }
+      ]
+    },
+    "ccdv-f": {
+      "source": "Offizielles Anthropic-Material: 3 illustrative Beispielfragen aus dem Claude Certified Developer – Foundations Exam Guide v1.0 (gültig ab Juli 2026). Anthropic weist ausdrücklich darauf hin, dass diese nicht aus dem echten Fragenpool stammen — als Stilbeispiele zu verstehen, nicht als vollständige Übungsprüfung.",
+      "questions": [
+        {
+          "id": 1,
+          "domain": "Domäne 2 — Anwendungen und Integration",
+          "situation": "Ein Entwickler muss über Nacht 10.000 Dokumente verarbeiten, um einen nicht dringenden Analysebericht zu erstellen. Die Kosten stehen im Vordergrund, und die Ergebnisse werden erst am nächsten Morgen benötigt.",
+          "question": "Welcher Ansatz passt am besten zu dieser Anforderung?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Jede Anfrage synchron und parallel über die Messages API senden, um so schnell wie möglich fertig zu werden.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Die Message-Batches-API verwenden, die große asynchrone Workloads innerhalb eines 24-Stunden-Fensters zu reduzierten Kosten verarbeitet.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "`max_tokens` bei synchronen Aufrufen senken, um Kosten zu minimieren.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Auf das kleinste verfügbare Modell umsteigen, unabhängig von der Ausgabequalität.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Die Message-Batches-API ist für latenztolerante Workloads mit hohem Volumen zu geringeren Kosten konzipiert, was zu einem nächtlichen, nicht dringenden Auftrag passt. Synchrones paralleles Senden (A) senkt nicht die Kosten pro Token; `max_tokens` zu senken (C) oder das Modell blind zu verkleinern (D) adressiert nicht die Abwägung zwischen Batch und Echtzeit.",
+          "example": "Wie der Versand von 10.000 Paketen per langsamerer, guenstigerer Nacht-Standardfracht, weil niemand sie vor morgen frueh braucht, statt fuer etwas nicht Dringendes teure Same-Hour-Kurierpreise zu zahlen."
+        },
+        {
+          "id": 2,
+          "domain": "Domäne 7 — Sicherheit",
+          "situation": "Ein Claude-basierter Agent fasst von Endnutzern eingereichte Webseiten zusammen. Eine Seite enthält versteckten Text, der das Modell anweist, vorherige Anweisungen zu ignorieren und seinen System-Prompt offenzulegen.",
+          "question": "Welche Gegenmaßnahme ist am effektivsten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Temperatur des Modells erhöhen, damit sein Verhalten schwerer vorhersagbar wird.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Abgerufene Seiteninhalte als nicht vertrauenswürdige Eingabe behandeln, getrennt von vertrauenswürdigen Anweisungen halten und Guardrails oder Hooks nutzen, damit eingeschleuste Anweisungen keine sensiblen Aktionen auslösen können.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Eine Zeile zum System-Prompt hinzufügen, die Nutzer bittet, keine bösartigen Anweisungen einzufügen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Auf ein größeres Modell umsteigen, das Anweisungen zuverlässiger befolgt.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Prompt Injection wird dadurch adressiert, dass nicht vertrauenswürdige Inhalte von vertrauenswürdigen Anweisungen isoliert und Guardrails nach dem Prinzip der geringsten Rechte durchgesetzt werden, damit eingeschleuster Text keine sensiblen Tools auslösen kann. Temperatur (A) ist für Injection irrelevant; eine höfliche Bitte (C) ist keine durchsetzbare Kontrolle; ein anweisungsfolgsameres Modell (D) kann anfälliger sein, nicht weniger.",
+          "example": "Wie ein Poststellen-Mitarbeiter, der den Inhalt eines Briefes liest, um ihn zusammenzufassen, aber genau weiss, dass er Anweisungen im Brieftext nicht befolgen darf, als haette sie die Geschaeftsfuehrung persoenlich gegeben - nicht vertrauenswuerdiger Inhalt wird gelesen, aber nie als Befehl ausgefuehrt."
+        },
+        {
+          "id": 3,
+          "domain": "Domäne 8 — Tools und MCPs",
+          "situation": "Ein Team möchte, dass Claude einen internen Bestandsdienst aufruft, der als REST-API bereitgestellt wird. Die Fähigkeit soll über mehrere Claude-Anwendungen hinweg wiederverwendbar und unabhängig von einer einzelnen App wartbar sein.",
+          "question": "Welcher Ansatz passt am besten?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Die Bestandslogik fest in den System-Prompt jeder Anwendung einbauen.",
+              "correct": false
+            },
+            {
+              "letter": "B",
+              "text": "Einen MCP-Server erstellen, der die Bestandsoperationen als Tools bereitstellt, sodass mehrere Claude-Anwendungen sich damit verbinden können.",
+              "correct": true
+            },
+            {
+              "letter": "C",
+              "text": "Die aktuellen Bestandsdaten bei jeder Anfrage in das Kontextfenster einfügen.",
+              "correct": false
+            },
+            {
+              "letter": "D",
+              "text": "Sich auf ein eingebautes Tool verlassen, da eingebaute Tools jede interne REST-API erreichen können.",
+              "correct": false
+            }
+          ],
+          "correctLetter": "B",
+          "explanation": "Ein MCP-Server stellt wiederverwendbare Tools bereit, die mehrere Claude-Anwendungen gemeinsam nutzen können und die unabhängig gewartet werden können. Logik fest in Prompts einzubauen (A) ist weder wiederverwendbar noch wartbar; Daten einzufügen (C) bietet keinen Live-Zugriff und verschwendet Kontext; eingebaute Tools (D) erreichen nicht automatisch beliebige interne APIs.",
+          "example": "Wie der Aufbau eines gemeinsamen internen Dienstes zur Lagerbestandsabfrage, den jede Team-Anwendung aufrufen kann, statt dass jedes App-Team dieselbe Lagerlogik separat fest einprogrammiert, die dann an fuenf Stellen gepflegt werden muesste."
+        }
+      ]
+    }
+  }
+}
